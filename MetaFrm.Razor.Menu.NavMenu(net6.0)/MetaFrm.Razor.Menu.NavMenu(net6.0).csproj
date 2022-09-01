@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -11,13 +11,24 @@
     <PackageId>MetaFrm.Razor.Menu.NavMenu.net6.0</PackageId>
     <Version>6.0.0</Version>
     <Authors>dsun</Authors>
-    <Company>MetaFrm</Company>
-    <Copyright>Copyright 2022. DSUN all rights reserved.</Copyright>
-    <PackageProjectUrl>https://github.com/dsuny/MetaFrm.Razor.Menu.NavMenu</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/dsuny/MetaFrm.Razor.Menu.NavMenu</RepositoryUrl>
-    <PackageTags>meta;framework;dotnet;</PackageTags>
+    <Company>Meta Framework</Company>
+    <Copyright>Copyright 2022. dsun all rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/MetaFrm/MetaFrm.Razor.Menu.NavMenu</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MetaFrm/MetaFrm.Razor.Menu.NavMenu</RepositoryUrl>
+    <PackageTags>meta;framework;dotnet;maui;</PackageTags>
 	
 	<SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))</SourceRevisionId>
+	
+	<PackageIcon>icon.png</PackageIcon>
+	
+	<ApplicationIcon>icon.ico</ApplicationIcon>
+	
+	<Title>Meta Framework Razor Menu NavMenu</Title>
+	
+	<Product>Meta Framework Razor Menu NavMenu</Product>
+	
+	<Description>Meta Framework
+(Multi platform &amp; Meta management)</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +39,10 @@
     <Compile Include="..\src\ViewModels\NavMenuViewModel.cs" Link="ViewModels\NavMenuViewModel.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -36,6 +51,13 @@
   <ItemGroup>
     <PackageReference Include="MetaFrm.Core.net6.0" Version="6.0.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
