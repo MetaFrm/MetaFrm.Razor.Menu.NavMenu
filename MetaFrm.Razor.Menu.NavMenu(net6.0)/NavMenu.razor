@@ -1,0 +1,77 @@
+﻿@using MetaFrm.Control
+@using MetaFrm.Maui.Devices
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@inherits BaseComponent
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" @onclick="() => this.OnMenuHomeClick()" href="">MFW</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" @onclick="this.ToggleNavMenu" disabled="@this.NavMenuViewModel.IsBusy">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="@(this.NavMenuViewModel.CollapseNavMenu?this.NavMenuViewModel.Collapse:this.NavMenuViewModel.NotCollapse) navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav me-auto">
+                @foreach (ViewModels.MenuItem parentMenuItem in this.NavMenuViewModel.MenuItems)
+                {
+                    if (parentMenuItem.AssemblyID == null || parentMenuItem.AssemblyID == 0 && parentMenuItem.Child.Count > 0)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</a>
+                            <div class="dropdown-menu">
+                                @foreach (ViewModels.MenuItem menuItem in parentMenuItem.Child)
+                                {
+                                    @if (Uri.IsWellFormedUriString(parentMenuItem.Description, UriKind.Absolute))
+                                    {
+                                        @if (Factory.Platform == DevicePlatform.Web || Factory.Platform == DevicePlatform.WinForms || Factory.Platform == DevicePlatform.WPF)
+                                        {
+                                            <a class="dropdown-item" href="@menuItem.Description" target="_blank" disabled="@this.NavMenuViewModel.IsBusy" data-toggle="tooltip" title="@menuItem.Description">&nbsp;&nbsp;@menuItem.Name</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" @onclick="() => this.OnMenuClick(menuItem.Description)" href="" disabled="@this.NavMenuViewModel.IsBusy" data-toggle="tooltip" title="@menuItem.Description">&nbsp;&nbsp;@menuItem.Name</a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" @onclick="() => this.OnMenuClick(menuItem.MenuID, menuItem.AssemblyID)" href="" disabled="@this.NavMenuViewModel.IsBusy" data-toggle="tooltip" title="@menuItem.Description">&nbsp;&nbsp;@menuItem.Name</a>
+                                    }
+                                }
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item" disabled="@this.NavMenuViewModel.IsBusy">
+                            @if (Uri.IsWellFormedUriString(parentMenuItem.Description, UriKind.Absolute))
+                            {
+                                @if (Factory.Platform == DevicePlatform.Web || Factory.Platform == DevicePlatform.WinForms || Factory.Platform == DevicePlatform.WPF)
+                                {
+                                    <a class="nav-link" href="@parentMenuItem.Description" target="_blank" disabled="@this.NavMenuViewModel.IsBusy" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link" @onclick="() => this.OnMenuClick(parentMenuItem.Description)" href="" disabled="@this.NavMenuViewModel.IsBusy" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</a>
+                                }
+                            }
+                            else
+                            {
+                                <a class="nav-link" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID)" href="" disabled="@this.NavMenuViewModel.IsBusy" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</a>
+                            }
+                        </li>
+                    }
+                }
+                <li class="nav-item">
+                    <hr class="hr-s1" />
+                </li>
+                @*<li class="nav-item" disabled="@this.NavMenuViewModel.IsBusy">
+                    <a class="nav-link" @onclick="this.OnStyleChangeClick" href="" disabled="@this.NavMenuViewModel.IsBusy">StyleChange</a>
+                </li>*@
+            </ul>
+            <ul class="navbar-nav">
+                <DynamicComponent Type="@this.NavMenuViewModel.LoginDisplayType" @ref="this.NavMenuViewModel.LoginDisplay" />
+            </ul>
+        </div>
+    </div>
+</nav>

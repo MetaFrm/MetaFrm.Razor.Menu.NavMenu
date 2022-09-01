@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>MetaFrm.Razor.Menu</RootNamespace>
+    <AssemblyName>MetaFrm.Razor.Menu.NavMenu</AssemblyName>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageId>MetaFrm.Razor.Menu.NavMenu.net5.0</PackageId>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>5.0.0</Version>
+    <Authors>dsun</Authors>
+    <Company>MetaFrm</Company>
+    <Copyright>Copyright 2022. DSUN all rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/dsuny/MetaFrm.Razor.Menu.NavMenu</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dsuny/MetaFrm.Razor.Menu.NavMenu</RepositoryUrl>
+    <PackageTags>meta;framework;dotnet;</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\src\LoginDisplay.razor.cs" Link="LoginDisplay.razor.cs" />
+    <Compile Include="..\src\NavMenu.razor.cs" Link="NavMenu.razor.cs" />
+    <Compile Include="..\src\ViewModel\LoginDisplayViewModel.cs" Link="ViewModel\LoginDisplayViewModel.cs" />
+    <Compile Include="..\src\ViewModel\NavMenuViewModel.cs" Link="ViewModel\NavMenuViewModel.cs" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.17" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModel\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MetaFrm.Core\MetaFrm.Core(net5.0)\MetaFrm.Core(net5.0).csproj" />
+  </ItemGroup>
+
+</Project>

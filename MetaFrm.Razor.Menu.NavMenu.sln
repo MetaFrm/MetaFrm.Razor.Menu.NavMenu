@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32611.2
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0F4637A3-337C-414C-9473-2CEC91A2987A}"
+	ProjectSection(SolutionItems) = preProject
+		src\LoginDisplay.razor.cs = src\LoginDisplay.razor.cs
+		src\NavMenu.razor.cs = src\NavMenu.razor.cs
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaFrm.Razor.Menu.NavMenu(net6.0)", "MetaFrm.Razor.Menu.NavMenu(net6.0)\MetaFrm.Razor.Menu.NavMenu(net6.0).csproj", "{492A4F4A-93A6-41ED-858F-7804F1805D8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ViewModels", "ViewModels", "{CC1E8AD2-91E5-47C1-8F53-293A9A0CD3B2}"
+	ProjectSection(SolutionItems) = preProject
+		src\ViewModels\LoginDisplayViewModel.cs = src\ViewModels\LoginDisplayViewModel.cs
+		src\ViewModels\MenuItem.cs = src\ViewModels\MenuItem.cs
+		src\ViewModels\NavMenuViewModel.cs = src\ViewModels\NavMenuViewModel.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{51E78244-6B63-47B9-ADD3-739EA1E14AD6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{1371C18F-0AF9-4D2B-A48A-E5AF80B99DED}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루션 항목", "{8649DBA9-1C66-4861-BFF9-32BF8014EDCB}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{492A4F4A-93A6-41ED-858F-7804F1805D8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{492A4F4A-93A6-41ED-858F-7804F1805D8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{492A4F4A-93A6-41ED-858F-7804F1805D8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{492A4F4A-93A6-41ED-858F-7804F1805D8B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CC1E8AD2-91E5-47C1-8F53-293A9A0CD3B2} = {0F4637A3-337C-414C-9473-2CEC91A2987A}
+		{1371C18F-0AF9-4D2B-A48A-E5AF80B99DED} = {51E78244-6B63-47B9-ADD3-739EA1E14AD6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {72ACB9CB-3847-492F-84A5-419B30FA6C9A}
+	EndGlobalSection
+EndGlobal

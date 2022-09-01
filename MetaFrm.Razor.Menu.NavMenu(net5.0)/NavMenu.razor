@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+    <a class="navbar-brand" @onclick="() => OnMenuClick(defaultNavMenuViewModel.MenuList[0])" href="">MFW</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="@(defaultNavMenuViewModel.CollapseNavMenu?defaultNavMenuViewModel.Collapse:defaultNavMenuViewModel.NotCollapse) navbar-collapse" id="navbarColor02">
+        <ul class="navbar-nav me-auto">
+                @foreach (var menuName in defaultNavMenuViewModel.MenuList)
+                {
+                    <li class="nav-item" @onclick="ToggleNavMenu">
+                            <NavLink class="nav-link" @onclick="() => OnMenuClick(menuName)" href="" Match="NavLinkMatch.All">@menuName</NavLink>
+                    </li>
+                }
+            <hr class="hr-s1" />
+            <li class="nav-item" @onclick="ToggleNavMenu">
+                    <NavLink class="nav-link" @onclick="() => OnStyleChangeClick()" href="" Match="NavLinkMatch.All">StyleChange</NavLink>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <DynamicComponent Type="@defaultNavMenuViewModel.LoginDisplayType" @ref="defaultNavMenuViewModel.LoginDisplay" />
+                @*<LoginDisplay />*@
+        </ul>
+        <form class="d-flex">
+            <input class="form-control me-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="button">Search</button>
+        </form>
+    </div>
+    </div>
+</nav>
