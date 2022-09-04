@@ -11,25 +11,25 @@
                 @this.DisplayName
             </NavLink>
         </li>
-        <li class="nav-item" @onclick="this.ToggleNavMenu" disabled="@this.LoginDisplayViewModel.IsBusy">
-            <input type="button" class="btn btn-secondary py-1 my-1" value="Sign out" @onclick="this.OnLogoutClick" href="/" disabled="@this.LoginDisplayViewModel.IsBusy">
+        <li class="nav-item" @onclick="this.ToggleNavMenu" >
+            <input type="button" class="btn btn-secondary py-1 my-1" value="Sign out" @onclick="this.OnLogoutClick" >
                 Sign out
             </input>
         </li>
     </Authorized>
      <NotAuthorized>
-        <li class="nav-item me-2" @onclick="ToggleNavMenu" disabled="@this.LoginDisplayViewModel.IsBusy">
-            <input type="button" class="btn btn-secondary py-1 my-1" value="Sign in" @onclick="this.OnLoginClick" href="/" disabled="@this.LoginDisplayViewModel.IsBusy">
+        <li class="nav-item me-2" @onclick="ToggleNavMenu" >
+            <input type="button" class="btn btn-secondary py-1 my-1" value="Sign in" @onclick="this.OnLoginClick" >
                 Sign in
             </input>
         </li>
-        <li class="nav-item me-2" @onclick="ToggleNavMenu" disabled="@this.LoginDisplayViewModel.IsBusy">
-            <input type="button" class="btn btn-secondary py-1 my-1" value="Register" @onclick="this.OnRegisterClick" href="/" disabled="@this.LoginDisplayViewModel.IsBusy">
+        <li class="nav-item me-2" @onclick="ToggleNavMenu" >
+            <input type="button" class="btn btn-secondary py-1 my-1" value="Register" @onclick="this.OnRegisterClick" >
                 Register
             </input>
         </li>
-        <li class="nav-item me-2" @onclick="ToggleNavMenu" disabled="@this.LoginDisplayViewModel.IsBusy">
-            <input type="button" class="btn btn-secondary py-1 my-1" value="Password Reset" @onclick="this.OnPasswordResetClick" href="/" disabled="@this.LoginDisplayViewModel.IsBusy">
+        <li class="nav-item me-2" @onclick="ToggleNavMenu" >
+            <input type="button" class="btn btn-secondary py-1 my-1" value="Password Reset" @onclick="this.OnPasswordResetClick" >
                 Password Reset
             </input>
         </li>

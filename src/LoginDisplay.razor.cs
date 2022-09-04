@@ -28,21 +28,15 @@ namespace MetaFrm.Razor.Menu
 
         private void ToggleNavMenu()
         {
-            try
-            {
-                this.LoginDisplayViewModel.IsBusy = true;
-                this.OnAction(this, new MetaFrmEventArgs { Action = "CollapseNavMenu" });
-            }
-            finally
-            {
-                this.LoginDisplayViewModel.IsBusy = false;
-            }
+            this.OnAction(this, new MetaFrmEventArgs { Action = "CollapseNavMenu" });
         }
 
         private void OnLoginClick()
         {
             try
             {
+                if (this.LoginDisplayViewModel.IsBusy) return;
+
                 this.LoginDisplayViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "Login" });
             }
@@ -55,6 +49,8 @@ namespace MetaFrm.Razor.Menu
         {
             try
             {
+                if (this.LoginDisplayViewModel.IsBusy) return;
+
                 this.LoginDisplayViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "Logout" });
             }
@@ -67,6 +63,8 @@ namespace MetaFrm.Razor.Menu
         {
             try
             {
+                if (this.LoginDisplayViewModel.IsBusy) return;
+
                 this.LoginDisplayViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "Register" });
             }
@@ -79,6 +77,8 @@ namespace MetaFrm.Razor.Menu
         {
             try
             {
+                if (this.LoginDisplayViewModel.IsBusy) return;
+
                 this.LoginDisplayViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "PasswordReset" });
             }

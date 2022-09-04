@@ -5,6 +5,7 @@ using MetaFrm.Razor.Menu.ViewModels;
 using MetaFrm.Service;
 using MetaFrm.Web.Bootstrap;
 using Microsoft.AspNetCore.Components;
+using System.Drawing;
 
 namespace MetaFrm.Razor.Menu
 {
@@ -18,6 +19,29 @@ namespace MetaFrm.Razor.Menu
         private bool isFirstLoad = true;
 
         [Inject] IBrowser? Browser { get; set; }
+
+        private string? LogoImageUrl { get; set; }
+        private Size? LogoImageSize { get; set; }
+        private string? LogoText { get; set; }
+
+        /// <summary>
+        /// OnInitialized
+        /// </summary>
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            this.LogoImageUrl = this.GetAttribute("LogoImageUrl");
+
+            string? tmp = this.GetAttribute("LogoImageSize");
+            string[]? tmps;
+            if (!tmp.IsNullOrEmpty())
+            {
+                tmps = tmp.Split(',');
+                this.LogoImageSize = new Size(tmps[0].ToInt(), tmps[1].ToInt());
+            }
+            this.LogoText = this.GetAttribute("LogoText");
+        }
 
         /// <summary>
         /// OnAfterRender
@@ -61,6 +85,8 @@ namespace MetaFrm.Razor.Menu
 
             try
             {
+                if (this.NavMenuViewModel.IsBusy) return;
+
                 this.NavMenuViewModel.IsBusy = true;
 
                 ServiceData data;
@@ -177,23 +203,17 @@ namespace MetaFrm.Razor.Menu
 
         private void ToggleNavMenu()
         {
-            try
-            {
-                this.NavMenuViewModel.IsBusy = true;
-                this.NavMenuViewModel.CollapseNavMenu = !this.NavMenuViewModel.CollapseNavMenu;
-            }
-            finally
-            {
-                this.NavMenuViewModel.IsBusy = false;
-            }
+            this.NavMenuViewModel.CollapseNavMenu = !this.NavMenuViewModel.CollapseNavMenu;
         }
 
         private void OnMenuHomeClick()
         {
             try
             {
+                if (this.NavMenuViewModel.IsBusy) return;
+
                 this.NavMenuViewModel.IsBusy = true;
-                this.Navigation?.NavigateTo("/", true);
+                this.OnAction(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
             }
             finally
             {
@@ -204,6 +224,8 @@ namespace MetaFrm.Razor.Menu
         {
             try
             {
+                if (this.NavMenuViewModel.IsBusy) return;
+
                 this.NavMenuViewModel.IsBusy = true;
 
                 if (url == null)
@@ -228,6 +250,8 @@ namespace MetaFrm.Razor.Menu
         {
             try
             {
+                if (this.NavMenuViewModel.IsBusy) return;
+
                 this.NavMenuViewModel.IsBusy = true;
                 if (menuID != null && assemblyID != null)
                     this.OnAction(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { (int)menuID, (int)assemblyID } });
@@ -243,6 +267,8 @@ namespace MetaFrm.Razor.Menu
         {
             try
             {
+                if (this.NavMenuViewModel.IsBusy) return;
+
                 this.NavMenuViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "StyleChange" });
             }
