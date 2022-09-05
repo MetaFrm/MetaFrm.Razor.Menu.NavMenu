@@ -1,5 +1,6 @@
 ﻿@using MetaFrm.Control
 @using MetaFrm.Maui.Devices
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
 @inherits BaseComponent
@@ -15,8 +16,8 @@
             {
                 @this.LogoText
             }
-            </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" @onclick="this.ToggleNavMenu" >
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" @onclick="this.ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -52,7 +53,7 @@
                     }
                     else
                     {
-                        <li class="nav-item" >
+                        <li class="nav-item">
                             @if (Uri.IsWellFormedUriString(parentMenuItem.Description, UriKind.Absolute))
                             {
                                 @if (Factory.Platform == DevicePlatform.Web || Factory.Platform == DevicePlatform.WinForms || Factory.Platform == DevicePlatform.WPF)
@@ -74,12 +75,31 @@
                 <li class="nav-item">
                     <hr class="hr-s1" />
                 </li>
-                @*<li class="nav-item" >
-                    <a class="nav-link" @onclick="this.OnStyleChangeClick" href="#" >StyleChange</a>
-                </li>*@
             </ul>
             <ul class="navbar-nav">
-                <DynamicComponent Type="@this.NavMenuViewModel.LoginDisplayType" @ref="this.NavMenuViewModel.LoginDisplay" />
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item me-2">
+                            <NavLink class="nav-link">
+                                @this.DisplayName
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <input type="button" class="btn btn-secondary py-1 my-1" value="Sign out" @onclick="this.OnLogoutClick" />
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="nav-item me-2">
+                            <input type="button" class="btn btn-secondary py-1 my-1" value="Sign in" @onclick="this.OnLoginClick" />
+                        </li>
+                        <li class="nav-item me-2">
+                            <input type="button" class="btn btn-secondary py-1 my-1" value="Register" @onclick="this.OnRegisterClick" />
+                        </li>
+                        <li class="nav-item me-2">
+                            <input type="button" class="btn btn-secondary py-1 my-1" value="Password Reset" @onclick="this.OnPasswordResetClick" />
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
             </ul>
         </div>
     </div>

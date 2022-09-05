@@ -9,14 +9,6 @@ namespace MetaFrm.Razor.Menu.ViewModels
     public partial class NavMenuViewModel : BaseViewModel
     {
         /// <summary>
-        /// LoginDisplayType
-        /// </summary>
-        public Type LoginDisplayType { get; set; } = typeof(LoginDisplay);
-        /// <summary>
-        /// LoginDisplay
-        /// </summary>
-        public DynamicComponent? LoginDisplay { get; set; }
-        /// <summary>
         /// CollapseNavMenu
         /// </summary>
         public bool CollapseNavMenu { get; set; } = true;

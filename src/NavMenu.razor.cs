@@ -17,6 +17,21 @@ namespace MetaFrm.Razor.Menu
         internal NavMenuViewModel NavMenuViewModel { get; set; } = Factory.CreateViewModel<NavMenuViewModel>();
 
         private bool isFirstLoad = true;
+        private string DisplayName
+        {
+            get
+            {
+                if (this.AuthenticationState != null)
+                {
+                    var auth = this.AuthenticationState.Result;
+
+                    if (auth.User.Identity != null && auth.User.Identity.IsAuthenticated)
+                        return auth.User.Claims.Single(x => x.Type == "Account.NICKNAME").Value;
+                }
+
+                return "";
+            }
+        }
 
         [Inject] IBrowser? Browser { get; set; }
 
@@ -53,12 +68,6 @@ namespace MetaFrm.Razor.Menu
 
             if (firstRender)
             {
-                if (this.NavMenuViewModel.LoginDisplay != null && this.NavMenuViewModel.LoginDisplay.Instance != null && this.NavMenuViewModel.LoginDisplay.Instance is IAction action)
-                {
-                    action.Action -= LoginDisplay_Begin;
-                    action.Action += LoginDisplay_Begin;
-                }
-
                 if (Factory.Platform != Maui.Devices.DevicePlatform.Web)
                     this.HomeMenu();
             }
@@ -189,18 +198,6 @@ namespace MetaFrm.Razor.Menu
             return null;
         }
 
-
-        private void LoginDisplay_Begin(ICore sender, MetaFrmEventArgs e)
-        {
-            if (e.Action == "CollapseNavMenu")
-            {
-                this.ToggleNavMenu();
-                this.StateHasChanged();
-            }
-            else
-                this.OnAction(sender, e);
-        }
-
         private void ToggleNavMenu()
         {
             this.NavMenuViewModel.CollapseNavMenu = !this.NavMenuViewModel.CollapseNavMenu;
@@ -263,14 +260,64 @@ namespace MetaFrm.Razor.Menu
                 this.NavMenuViewModel.IsBusy = false;
             }
         }
-        private void OnStyleChangeClick()
+        private void OnLoginClick()
         {
             try
             {
                 if (this.NavMenuViewModel.IsBusy) return;
 
                 this.NavMenuViewModel.IsBusy = true;
-                this.OnAction(this, new MetaFrmEventArgs { Action = "StyleChange" });
+                this.OnAction(this, new MetaFrmEventArgs { Action = "Login" });
+
+                this.ToggleNavMenu();
+            }
+            finally
+            {
+                this.NavMenuViewModel.IsBusy = false;
+            }
+        }
+        private void OnLogoutClick()
+        {
+            try
+            {
+                if (this.NavMenuViewModel.IsBusy) return;
+
+                this.NavMenuViewModel.IsBusy = true;
+                this.OnAction(this, new MetaFrmEventArgs { Action = "Logout" });
+
+                this.ToggleNavMenu();
+            }
+            finally
+            {
+                this.NavMenuViewModel.IsBusy = false;
+            }
+        }
+        private void OnRegisterClick()
+        {
+            try
+            {
+                if (this.NavMenuViewModel.IsBusy) return;
+
+                this.NavMenuViewModel.IsBusy = true;
+                this.OnAction(this, new MetaFrmEventArgs { Action = "Register" });
+
+                this.ToggleNavMenu();
+            }
+            finally
+            {
+                this.NavMenuViewModel.IsBusy = false;
+            }
+        }
+        private void OnPasswordResetClick()
+        {
+            try
+            {
+                if (this.NavMenuViewModel.IsBusy) return;
+
+                this.NavMenuViewModel.IsBusy = true;
+                this.OnAction(this, new MetaFrmEventArgs { Action = "PasswordReset" });
+
+                this.ToggleNavMenu();
             }
             finally
             {

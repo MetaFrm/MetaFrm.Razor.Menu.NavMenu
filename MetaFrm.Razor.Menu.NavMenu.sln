@@ -5,7 +5,6 @@ VisualStudioVersion = 17.3.32611.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0F4637A3-337C-414C-9473-2CEC91A2987A}"
 	ProjectSection(SolutionItems) = preProject
-		src\LoginDisplay.razor.cs = src\LoginDisplay.razor.cs
 		src\NavMenu.razor.cs = src\NavMenu.razor.cs
 	EndProjectSection
 EndProject
@@ -13,7 +12,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaFrm.Razor.Menu.NavMenu(
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ViewModels", "ViewModels", "{CC1E8AD2-91E5-47C1-8F53-293A9A0CD3B2}"
 	ProjectSection(SolutionItems) = preProject
-		src\ViewModels\LoginDisplayViewModel.cs = src\ViewModels\LoginDisplayViewModel.cs
 		src\ViewModels\MenuItem.cs = src\ViewModels\MenuItem.cs
 		src\ViewModels\NavMenuViewModel.cs = src\ViewModels\NavMenuViewModel.cs
 	EndProjectSection
