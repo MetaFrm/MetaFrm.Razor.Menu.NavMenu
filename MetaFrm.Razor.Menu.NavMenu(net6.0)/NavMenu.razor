@@ -80,23 +80,27 @@
                 <AuthorizeView>
                     <Authorized>
                         <li class="nav-item me-2">
-                            <NavLink class="nav-link">
+                            <a class="nav-link" href="#" data-toggle="tooltip" title="@this.DisplayName" @onclick="this.OnProfileClick">
+                                @if (!this.ProfileImage.IsNullOrEmpty())
+                                {
+                                    <img class="rounded-pill me-2" alt="Profile" width="30" height="30" src="@this.ProfileImage" />
+                                }
                                 @this.DisplayName
-                            </NavLink>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <input type="button" class="btn btn-secondary py-1 my-1" value="Sign out" @onclick="this.OnLogoutClick" />
+                            <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnLogoutClick"><i class="bi bi-box-arrow-right" /> Sign out</button>
                         </li>
                     </Authorized>
                     <NotAuthorized>
                         <li class="nav-item me-2">
-                            <input type="button" class="btn btn-secondary py-1 my-1" value="Sign in" @onclick="this.OnLoginClick" />
+                            <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnLoginClick"><i class="bi bi-box-arrow-in-left" /> Sign in</button>
                         </li>
                         <li class="nav-item me-2">
-                            <input type="button" class="btn btn-secondary py-1 my-1" value="Register" @onclick="this.OnRegisterClick" />
+                            <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnRegisterClick">Register</button>
                         </li>
                         <li class="nav-item me-2">
-                            <input type="button" class="btn btn-secondary py-1 my-1" value="Password Reset" @onclick="this.OnPasswordResetClick" />
+                            <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnPasswordResetClick">Password Reset</button>
                         </li>
                     </NotAuthorized>
                 </AuthorizeView>

@@ -32,6 +32,7 @@ namespace MetaFrm.Razor.Menu
                 return "";
             }
         }
+        private string? ProfileImage { get; set; }
 
         [Inject] IBrowser? Browser { get; set; }
 
@@ -160,6 +161,12 @@ namespace MetaFrm.Razor.Menu
                             }
                         }
                     }
+
+                    if (response.DataSet != null && response.DataSet.DataTables.Count > 1 && response.DataSet.DataTables[1].DataRows.Count > 0)
+                    {
+                        foreach (Data.DataRow dataRow in response.DataSet.DataTables[1].DataRows)
+                            this.ProfileImage = dataRow.String("PROFILE_IMAGE");
+                    }
                 }
                 else
                 {
@@ -211,6 +218,8 @@ namespace MetaFrm.Razor.Menu
 
                 this.NavMenuViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
+
+                this.ToggleNavMenu();
             }
             finally
             {
@@ -252,6 +261,22 @@ namespace MetaFrm.Razor.Menu
                 this.NavMenuViewModel.IsBusy = true;
                 if (menuID != null && assemblyID != null)
                     this.OnAction(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { (int)menuID, (int)assemblyID } });
+
+                this.ToggleNavMenu();
+            }
+            finally
+            {
+                this.NavMenuViewModel.IsBusy = false;
+            }
+        }
+        private void OnProfileClick()
+        {
+            try
+            {
+                if (this.NavMenuViewModel.IsBusy) return;
+
+                this.NavMenuViewModel.IsBusy = true;
+                this.OnAction(this, new MetaFrmEventArgs { Action = "Profile" });
 
                 this.ToggleNavMenu();
             }
