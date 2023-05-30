@@ -40,6 +40,11 @@ namespace MetaFrm.Razor.Menu
         private Size? LogoImageSize { get; set; }
         private string? LogoText { get; set; }
 
+#if IOS || ANDROID
+        //[Inject]
+        //internal IDeviceInfo? DeviceInfo { get; set; }
+#endif
+
         /// <summary>
         /// OnInitialized
         /// </summary>
@@ -70,7 +75,12 @@ namespace MetaFrm.Razor.Menu
             if (firstRender)
             {
                 if (Factory.Platform != Maui.Devices.DevicePlatform.Web)
+                {
+                    this.SaveToken();
+#if IOS || ANDROID
                     this.HomeMenu();
+#endif
+                }
             }
             else
             {
@@ -181,6 +191,44 @@ namespace MetaFrm.Razor.Menu
                 this.NavMenuViewModel.IsBusy = false;
             }
         }
+        private void SaveToken()
+        {
+            Response? response;
+
+            try
+            {
+                ServiceData serviceData = new()
+                {
+                    TransactionScope = true,
+                    Token = this.UserClaim("Token")
+                };
+                serviceData["1"].CommandText = this.GetAttribute("SaveToken");
+                serviceData["1"].AddParameter("TOKEN_TYPE", DbType.NVarChar, 50, "Firebase.FCM");
+                serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
+#if IOS || ANDROID
+                if (this.DeviceInfo != null)
+                    serviceData["1"].AddParameter("DEVICE_MODEL", DbType.NVarChar, 50, this.DeviceInfo.Model);
+#endif
+                serviceData["1"].AddParameter("TOKEN_STR", DbType.NVarChar, 200, Config.Client.GetAttribute("FirebaseDeviceToken"));
+
+                response = serviceData.ServiceRequest(serviceData);
+
+                if (response.Status == Status.OK)
+                {
+                    this.ModalShow("Login", "SaveToken Good", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+                }
+                else
+                {
+                    if (response != null)
+                        this.ModalShow("Login", response.Message, new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ModalShow("Login", $"{ex.ToString()} Account.USER_ID:{this.UserClaim("Account.USER_ID")}", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+            }
+        }
+
         private void OnClickFunction(string action)
         {
         }
