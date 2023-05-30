@@ -1,6 +1,7 @@
 ﻿using MetaFrm.Control;
 using MetaFrm.Database;
 using MetaFrm.Maui.ApplicationModel;
+using MetaFrm.Maui.Devices;
 using MetaFrm.Razor.Menu.ViewModels;
 using MetaFrm.Service;
 using MetaFrm.Web.Bootstrap;
@@ -40,10 +41,8 @@ namespace MetaFrm.Razor.Menu
         private Size? LogoImageSize { get; set; }
         private string? LogoText { get; set; }
 
-#if IOS || ANDROID
         [Inject]
         internal IDeviceInfo? DeviceInfo { get; set; }
-#endif
 
         /// <summary>
         /// OnInitialized
