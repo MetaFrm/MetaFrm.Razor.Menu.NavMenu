@@ -78,7 +78,8 @@ namespace MetaFrm.Razor.Menu
                 {
                     this.SaveToken();
 #if IOS || ANDROID
-                    this.HomeMenu();
+                    if (this.IsLogin())
+                        this.HomeMenu();
 #endif
                 }
             }
