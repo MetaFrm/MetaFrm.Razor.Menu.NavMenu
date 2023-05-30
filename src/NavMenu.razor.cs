@@ -40,7 +40,6 @@ namespace MetaFrm.Razor.Menu
         private Size? LogoImageSize { get; set; }
         private string? LogoText { get; set; }
 
-
 #if IOS || ANDROID
         //[Inject]
         //internal IDeviceInfo? DeviceInfo { get; set; }
@@ -78,10 +77,6 @@ namespace MetaFrm.Razor.Menu
                 if (Factory.Platform != Maui.Devices.DevicePlatform.Web)
                 {
                     this.HomeMenu();
-//#if IOS || ANDROID
-//                    if (this.IsLogin())
-//                        this.SaveToken();
-//#endif
                 }
             }
             else
@@ -124,6 +119,11 @@ namespace MetaFrm.Razor.Menu
                     data["1"].AddParameter("START_MENU_ID", DbType.Int, 3, null);
                     data["1"].AddParameter("ONLY_PARENT_MENU_ID", DbType.Int, 3, null);
                     data["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
+
+#if IOS || ANDROID
+                    if (this.GetAttribute("IsSaveToken").ToString() != "Y")
+                        this.SaveToken();
+#endif
                 }
                 else
                 {
@@ -217,6 +217,8 @@ namespace MetaFrm.Razor.Menu
 
                 if (response.Status == Status.OK)
                 {
+                    this.SetAttribute("IsSaveToken", "Y");
+
                     this.ModalShow("Login", "SaveToken Good", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
                 }
                 else
