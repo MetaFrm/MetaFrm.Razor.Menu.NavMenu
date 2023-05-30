@@ -41,8 +41,8 @@ namespace MetaFrm.Razor.Menu
         private string? LogoText { get; set; }
 
 #if IOS || ANDROID
-        //[Inject]
-        //internal IDeviceInfo? DeviceInfo { get; set; }
+        [Inject]
+        internal IDeviceInfo? DeviceInfo { get; set; }
 #endif
 
         /// <summary>
