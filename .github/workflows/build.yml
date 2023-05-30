@@ -13,7 +13,7 @@ jobs:
       DLL_ID: 22
       DLL_PATH: "MetaFrm.Razor.Menu.NavMenu(net6.0)/bin/Release/net6.0/MetaFrm.Razor.Menu.NavMenu.dll"
       UPLOAD_MODURE: "Y"
-      PUSH_NUGET: "¤Ë"
+      PUSH_NUGET: "Y"
       METAFRM_UPLOADMODULE_URL: "https://download.metafrm.net/github/MetaFrameworkManagementSystemUploadModule.zip"
       METAFRM_UPLOADMODULE_ZIP: "temp/MetaFrameworkManagementSystemUploadModule.zip"
       METAFRM_UPLOADMODULE_FILE: "temp/MetaFrameworkManagementSystemUploadModule.dll"
