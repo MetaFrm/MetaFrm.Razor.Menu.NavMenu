@@ -40,6 +40,7 @@ namespace MetaFrm.Razor.Menu
         private Size? LogoImageSize { get; set; }
         private string? LogoText { get; set; }
 
+
 #if IOS || ANDROID
         //[Inject]
         //internal IDeviceInfo? DeviceInfo { get; set; }
