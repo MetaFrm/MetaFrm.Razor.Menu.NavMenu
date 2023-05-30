@@ -41,6 +41,9 @@ namespace MetaFrm.Razor.Menu
         private Size? LogoImageSize { get; set; }
         private string? LogoText { get; set; }
 
+        [Inject]
+        internal IDeviceInfo? DeviceInfo { get; set; }
+
         /// <summary>
         /// OnInitialized
         /// </summary>
@@ -116,7 +119,7 @@ namespace MetaFrm.Razor.Menu
                     data["1"].AddParameter("ONLY_PARENT_MENU_ID", DbType.Int, 3, null);
                     data["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
 
-                    if (this.GetAttribute("IsSaveToken").ToString() != "Y" && Config.Client.GetAttribute("DeviceInfo.Model") != null)
+                    if (Config.Client.GetAttribute("IsSaveToken") == null && this.DeviceInfo != null)
                         this.SaveToken();
                 }
                 else
@@ -201,25 +204,25 @@ namespace MetaFrm.Razor.Menu
                 serviceData["1"].CommandText = this.GetAttribute("SaveToken");
                 serviceData["1"].AddParameter("TOKEN_TYPE", DbType.NVarChar, 50, "Firebase.FCM");
                 serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
-                serviceData["1"].AddParameter("DEVICE_MODEL", DbType.NVarChar, 50, this.GetAttribute("DeviceInfo.Model"));
+                if (this.DeviceInfo != null)
+                    serviceData["1"].AddParameter("DEVICE_MODEL", DbType.NVarChar, 50, this.DeviceInfo.Model);
                 serviceData["1"].AddParameter("TOKEN_STR", DbType.NVarChar, 200, Config.Client.GetAttribute("FirebaseDeviceToken"));
 
                 response = serviceData.ServiceRequest(serviceData);
 
                 if (response.Status == Status.OK)
                 {
-                    this.SetAttribute("IsSaveToken", "Y");
-                    this.ModalShow("Login", "SaveToken Good", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+                    Config.Client.SetAttribute("IsSaveToken", "Y");
                 }
                 else
                 {
                     if (response != null && response.Message != null)
-                        this.ModalShow("Login", response.Message, new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+                        this.ModalShow("SaveToken", response.Message, new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
                 }
             }
             catch (Exception ex)
             {
-                this.ModalShow("Login", $"{ex.ToString()} Account.USER_ID:{this.UserClaim("Account.USER_ID")}", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+                this.ModalShow("SaveToken", $"{ex.ToString()}", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
             }
         }
 
