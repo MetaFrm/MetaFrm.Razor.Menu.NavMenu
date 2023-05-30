@@ -119,7 +119,7 @@ namespace MetaFrm.Razor.Menu
                     data["1"].AddParameter("ONLY_PARENT_MENU_ID", DbType.Int, 3, null);
                     data["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
 
-                    if (Config.Client.GetAttribute("IsSaveToken") == null && this.DeviceInfo != null)
+                    if (Config.Client.GetAttribute("IsSaveToken") == null && this.DeviceInfo != null && this.DeviceInfo.Model != null)
                         this.SaveToken();
                 }
                 else
