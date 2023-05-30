@@ -77,10 +77,10 @@ namespace MetaFrm.Razor.Menu
                 if (Factory.Platform != Maui.Devices.DevicePlatform.Web)
                 {
                     this.HomeMenu();
-#if IOS || ANDROID
-                    if (this.IsLogin())
-                        this.SaveToken();
-#endif
+//#if IOS || ANDROID
+//                    if (this.IsLogin())
+//                        this.SaveToken();
+//#endif
                 }
             }
             else
