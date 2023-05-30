@@ -41,9 +41,6 @@ namespace MetaFrm.Razor.Menu
         private Size? LogoImageSize { get; set; }
         private string? LogoText { get; set; }
 
-        [Inject]
-        internal IDeviceInfo? DeviceInfo { get; set; }
-
         /// <summary>
         /// OnInitialized
         /// </summary>
@@ -216,7 +213,7 @@ namespace MetaFrm.Razor.Menu
                 }
                 else
                 {
-                    if (response != null)
+                    if (response != null && response.Message != null)
                         this.ModalShow("Login", response.Message, new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
                 }
             }
