@@ -119,10 +119,8 @@ namespace MetaFrm.Razor.Menu
                     data["1"].AddParameter("ONLY_PARENT_MENU_ID", DbType.Int, 3, null);
                     data["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
 
-#if IOS || ANDROID
-                    if (this.GetAttribute("IsSaveToken").ToString() != "Y")
+                    if (this.GetAttribute("IsSaveToken").ToString() != "Y" && Config.Client.GetAttribute("DeviceInfo.Model") != null)
                         this.SaveToken();
-#endif
                 }
                 else
                 {
@@ -206,10 +204,7 @@ namespace MetaFrm.Razor.Menu
                 serviceData["1"].CommandText = this.GetAttribute("SaveToken");
                 serviceData["1"].AddParameter("TOKEN_TYPE", DbType.NVarChar, 50, "Firebase.FCM");
                 serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
-#if IOS || ANDROID
-                if (this.DeviceInfo != null)
-                    serviceData["1"].AddParameter("DEVICE_MODEL", DbType.NVarChar, 50, this.DeviceInfo.Model);
-#endif
+                serviceData["1"].AddParameter("DEVICE_MODEL", DbType.NVarChar, 50, this.GetAttribute("DeviceInfo.Model"));
                 serviceData["1"].AddParameter("TOKEN_STR", DbType.NVarChar, 200, Config.Client.GetAttribute("FirebaseDeviceToken"));
 
                 response = serviceData.ServiceRequest(serviceData);
@@ -217,7 +212,6 @@ namespace MetaFrm.Razor.Menu
                 if (response.Status == Status.OK)
                 {
                     this.SetAttribute("IsSaveToken", "Y");
-
                     this.ModalShow("Login", "SaveToken Good", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
                 }
                 else
