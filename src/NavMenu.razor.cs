@@ -154,19 +154,16 @@ namespace MetaFrm.Razor.Menu
                                 });
                             else
                             {
-                                MenuItem? menuItem = this.FindParent(this.NavMenuViewModel.MenuItems, dataRow.Int("PARENT_MENU_ID"));
-
-                                if (menuItem != null)
-                                    menuItem.Child.Add(new()
-                                    {
-                                        MenuID = dataRow.Int("MENU_ID"),
-                                        ParentMenuID = dataRow.Int("PARENT_MENU_ID"),
-                                        Name = dataRow.String("NAME"),
-                                        Description = dataRow.String("DESCRIPTION"),
-                                        Icon = dataRow.String("ICON"),
-                                        AssemblyID = dataRow.Int("ASSEMBLY_ID"),
-                                        Sort = dataRow.Int("SORT"),
-                                    });
+                                this.FindParent(this.NavMenuViewModel.MenuItems, dataRow.Int("PARENT_MENU_ID"))?.Child.Add(new()
+                                {
+                                    MenuID = dataRow.Int("MENU_ID"),
+                                    ParentMenuID = dataRow.Int("PARENT_MENU_ID"),
+                                    Name = dataRow.String("NAME"),
+                                    Description = dataRow.String("DESCRIPTION"),
+                                    Icon = dataRow.String("ICON"),
+                                    AssemblyID = dataRow.Int("ASSEMBLY_ID"),
+                                    Sort = dataRow.Int("SORT"),
+                                });
                             }
                         }
                     }
@@ -222,7 +219,7 @@ namespace MetaFrm.Razor.Menu
             }
             catch (Exception ex)
             {
-                this.ModalShow("SaveToken", $"{ex.ToString()}", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+                this.ModalShow("SaveToken", $"{ex}", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
             }
         }
 
@@ -282,7 +279,7 @@ namespace MetaFrm.Razor.Menu
                 if (url == null)
                     return;
 
-                Uri uri = new Uri(url);
+                Uri uri = new(url);
 
                 if (this.Browser != null)
                     await this.Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
