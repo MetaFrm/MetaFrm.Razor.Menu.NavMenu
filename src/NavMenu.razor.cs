@@ -210,7 +210,10 @@ namespace MetaFrm.Razor.Menu
                 serviceData["1"].AddParameter("TOKEN_TYPE", DbType.NVarChar, 50, "Firebase.FCM");
                 serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
                 if (this.DeviceInfo != null)
+                {
                     serviceData["1"].AddParameter("DEVICE_MODEL", DbType.NVarChar, 50, this.DeviceInfo.Model);
+                    serviceData["1"].AddParameter("DEVICE_NAME", DbType.NVarChar, 50, this.DeviceInfo.Name);
+                }
                 serviceData["1"].AddParameter("TOKEN_STR", DbType.NVarChar, 200, Token);
 
                 response = serviceData.ServiceRequest(serviceData);
