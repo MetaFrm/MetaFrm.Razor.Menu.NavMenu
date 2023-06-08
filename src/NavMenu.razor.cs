@@ -44,6 +44,9 @@ namespace MetaFrm.Razor.Menu
         [Inject]
         internal IDeviceInfo? DeviceInfo { get; set; }
 
+        [Inject]
+        internal IDeviceToken? DeviceToken { get; set; }
+
         /// <summary>
         /// OnInitialized
         /// </summary>
@@ -95,7 +98,7 @@ namespace MetaFrm.Razor.Menu
                 this.StateHasChanged();
             }
         }
-        private void SelectMenu()
+        private async void SelectMenu()
         {
             Response response;
 
@@ -119,8 +122,13 @@ namespace MetaFrm.Razor.Menu
                     data["1"].AddParameter("ONLY_PARENT_MENU_ID", DbType.Int, 3, null);
                     data["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
 
-                    if (Config.Client.GetAttribute("IsSaveToken") == null && this.DeviceInfo != null && this.DeviceInfo.Model != null && Config.Client.GetAttribute("FirebaseDeviceToken") != null)
-                        this.SaveToken();
+                    if (this.DeviceToken != null)
+                    {
+                        string? tmp = await this.DeviceToken.GetToken();
+
+                        if (Config.Client.GetAttribute("IsSaveToken") == null && this.DeviceInfo != null && this.DeviceInfo.Model != null && !tmp.IsNullOrEmpty())
+                            this.SaveToken(tmp);
+                    }
                 }
                 else
                 {
@@ -187,7 +195,7 @@ namespace MetaFrm.Razor.Menu
                 this.NavMenuViewModel.IsBusy = false;
             }
         }
-        private void SaveToken()
+        private void SaveToken(string? Token)
         {
             Response? response;
 
@@ -203,7 +211,7 @@ namespace MetaFrm.Razor.Menu
                 serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
                 if (this.DeviceInfo != null)
                     serviceData["1"].AddParameter("DEVICE_MODEL", DbType.NVarChar, 50, this.DeviceInfo.Model);
-                serviceData["1"].AddParameter("TOKEN_STR", DbType.NVarChar, 200, Config.Client.GetAttribute("FirebaseDeviceToken"));
+                serviceData["1"].AddParameter("TOKEN_STR", DbType.NVarChar, 200, Token);
 
                 response = serviceData.ServiceRequest(serviceData);
 
