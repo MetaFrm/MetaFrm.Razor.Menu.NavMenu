@@ -190,6 +190,10 @@ namespace MetaFrm.Razor.Menu
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                this.ModalShow("LoadMenu", $"{ex}", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+            }
             finally
             {
                 this.NavMenuViewModel.IsBusy = false;
