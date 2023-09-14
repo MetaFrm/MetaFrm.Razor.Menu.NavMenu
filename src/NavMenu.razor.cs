@@ -6,6 +6,7 @@ using MetaFrm.Razor.Menu.ViewModels;
 using MetaFrm.Service;
 using MetaFrm.Web.Bootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System.Drawing;
 
 namespace MetaFrm.Razor.Menu
@@ -46,6 +47,10 @@ namespace MetaFrm.Razor.Menu
 
         [Inject]
         internal IDeviceToken? DeviceToken { get; set; }
+
+        private int? ActiveMenuID { get; set; } = null;
+
+        private int? ActiveAssemblyID { get; set; } = null;
 
         /// <summary>
         /// OnInitialized
@@ -150,6 +155,7 @@ namespace MetaFrm.Razor.Menu
                         foreach (Data.DataRow dataRow in response.DataSet.DataTables[0].DataRows)
                         {
                             if (dataRow.Int("PARENT_MENU_ID") == 0)
+                            {
                                 this.NavMenuViewModel.MenuItems.Add(new()
                                 {
                                     MenuID = dataRow.Int("MENU_ID"),
@@ -160,6 +166,7 @@ namespace MetaFrm.Razor.Menu
                                     AssemblyID = dataRow.Int("ASSEMBLY_ID"),
                                     Sort = dataRow.Int("SORT"),
                                 });
+                            }
                             else
                             {
                                 this.FindParent(this.NavMenuViewModel.MenuItems, dataRow.Int("PARENT_MENU_ID"))?.Child.Add(new()
@@ -173,6 +180,12 @@ namespace MetaFrm.Razor.Menu
                                     Sort = dataRow.Int("SORT"),
                                 });
                             }
+
+                            if (this.ActiveMenuID == null)
+                                this.ActiveMenuID = dataRow.Int("MENU_ID");
+
+                            if (this.ActiveAssemblyID == null)
+                                this.ActiveAssemblyID = dataRow.Int("ASSEMBLY_ID");
                         }
                     }
 
@@ -262,9 +275,13 @@ namespace MetaFrm.Razor.Menu
             return null;
         }
 
-        private void ToggleNavMenu()
+        private async void ToggleNavMenu()
         {
             this.NavMenuViewModel.CollapseNavMenu = !this.NavMenuViewModel.CollapseNavMenu;
+
+            if ((Factory.ProjectService.GetAttributeValue("Template.Name") ?? "") == "sneat")
+                if (this.JSRuntime != null)
+                    await this.JSRuntime.InvokeVoidAsync("LayoutMenuInit");
         }
 
         private void OnMenuHomeClick()
@@ -277,6 +294,24 @@ namespace MetaFrm.Razor.Menu
                 this.OnAction(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
 
                 this.ToggleNavMenu();
+            }
+            finally
+            {
+                this.NavMenuViewModel.IsBusy = false;
+            }
+        }
+        private void OnOpenMenuClick(int? menuID)
+        {
+            try
+            {
+                if (this.NavMenuViewModel.IsBusy) return;
+
+                this.NavMenuViewModel.IsBusy = true;
+
+                this.ActiveMenuID = menuID;
+            }
+            catch (Exception)
+            {
             }
             finally
             {
@@ -318,6 +353,8 @@ namespace MetaFrm.Razor.Menu
                 this.NavMenuViewModel.IsBusy = true;
                 if (menuID != null && assemblyID != null)
                     this.OnAction(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { (int)menuID, (int)assemblyID } });
+
+                this.ActiveAssemblyID = assemblyID;
 
                 this.ToggleNavMenu();
             }
@@ -405,6 +442,13 @@ namespace MetaFrm.Razor.Menu
             {
                 this.NavMenuViewModel.IsBusy = false;
             }
+        }
+
+        private async void OnLayoutMenuExpandeClick()
+        {
+            if ((Factory.ProjectService.GetAttributeValue("Template.Name") ?? "") == "sneat")
+                if (this.JSRuntime != null)
+                    await this.JSRuntime.InvokeVoidAsync("LayoutMenuExpande");
         }
     }
 }
