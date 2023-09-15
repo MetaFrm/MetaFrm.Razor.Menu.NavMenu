@@ -18,18 +18,15 @@ namespace MetaFrm.Razor.Menu
     {
         internal NavMenuViewModel NavMenuViewModel { get; set; } = Factory.CreateViewModel<NavMenuViewModel>();
 
+        Auth.AuthenticationStateProvider AuthenticationState;
+
         private bool isFirstLoad = true;
         private string DisplayName
         {
             get
             {
-                if (this.AuthenticationState != null)
-                {
-                    var auth = this.AuthenticationState.Result;
-
-                    if (auth.User.Identity != null && auth.User.Identity.IsAuthenticated)
-                        return auth.User.Claims.Single(x => x.Type == "Account.NICKNAME").Value;
-                }
+                if (this.AuthenticationState != null && this.AuthenticationState.IsLogin())
+                    return this.AuthenticationState.UserClaim("Account.NICKNAME");
 
                 return "";
             }
@@ -58,6 +55,8 @@ namespace MetaFrm.Razor.Menu
         protected override void OnInitialized()
         {
             base.OnInitialized();
+
+            this.AuthenticationState ??= (this.AuthStateProvider as Auth.AuthenticationStateProvider) ?? (Auth.AuthenticationStateProvider)Factory.CreateInstance(typeof(Auth.AuthenticationStateProvider));
 
             this.LogoImageUrl = this.GetAttribute("LogoImageUrl");
 
@@ -115,17 +114,17 @@ namespace MetaFrm.Razor.Menu
 
                 ServiceData data;
 
-                if (this.IsLogin())
+                if (this.AuthenticationState.IsLogin())
                 {
                     data = new()
                     {
-                        Token = this.UserClaim("Token")
+                        Token = this.AuthenticationState.UserClaim("Token")
                     };
 
                     data["1"].CommandText = this.GetAttribute("Select.Menu");
                     data["1"].AddParameter("START_MENU_ID", DbType.Int, 3, null);
                     data["1"].AddParameter("ONLY_PARENT_MENU_ID", DbType.Int, 3, null);
-                    data["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
+                    data["1"].AddParameter("USER_ID", DbType.Int, 3, this.AuthenticationState.UserClaim("Account.USER_ID").ToInt());
 
                     if (this.DeviceToken != null)
                     {
@@ -181,11 +180,8 @@ namespace MetaFrm.Razor.Menu
                                 });
                             }
 
-                            if (this.ActiveMenuID == null)
-                                this.ActiveMenuID = dataRow.Int("MENU_ID");
-
-                            if (this.ActiveAssemblyID == null)
-                                this.ActiveAssemblyID = dataRow.Int("ASSEMBLY_ID");
+                            this.ActiveMenuID ??= dataRow.Int("MENU_ID");
+                            this.ActiveAssemblyID ??= dataRow.Int("ASSEMBLY_ID");
                         }
                     }
 
@@ -221,11 +217,11 @@ namespace MetaFrm.Razor.Menu
                 ServiceData serviceData = new()
                 {
                     TransactionScope = true,
-                    Token = this.UserClaim("Token")
+                    Token = this.AuthenticationState.UserClaim("Token")
                 };
                 serviceData["1"].CommandText = this.GetAttribute("SaveToken");
                 serviceData["1"].AddParameter("TOKEN_TYPE", DbType.NVarChar, 50, "Firebase.FCM");
-                serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
+                serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.AuthenticationState.UserClaim("Account.USER_ID").ToInt());
                 if (this.DeviceInfo != null)
                 {
                     serviceData["1"].AddParameter("DEVICE_MODEL", DbType.NVarChar, 50, this.DeviceInfo.Model);
