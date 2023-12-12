@@ -48,7 +48,7 @@
                                             }
                                             else
                                             {
-                                                <a class="dropdown-item" @onclick="() => this.OnMenuClick(menuItem.MenuID, menuItem.AssemblyID)" href="#" data-toggle="tooltip" title="@menuItem.Description">&nbsp;&nbsp;@menuItem.Name</a>
+                                                <a class="dropdown-item" @onclick="() => this.OnMenuClick(menuItem.MenuID, menuItem.AssemblyID, false)" href="#" data-toggle="tooltip" title="@menuItem.Description">&nbsp;&nbsp;@menuItem.Name</a>
                                             }
                                         }
                                     </div>
@@ -70,7 +70,7 @@
                                     }
                                     else
                                     {
-                                        <a class="nav-link" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID)" href="#" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</a>
+                                        <a class="nav-link" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID, false)" href="#" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</a>
                                     }
                                 </li>
                             }
@@ -116,7 +116,7 @@
     case "sneat":
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" data-bg-class="bg-menu-theme">
             <div class="app-brand demo ">
-                <a href="index.html" class="app-brand-link">
+                <a href="#" class="app-brand-link">
                     <span class="app-brand-logo demo">
                         <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@this.LogoText" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
                     </span>
@@ -131,7 +131,7 @@
             <ul class="menu-inner py-1 ps">
                 @foreach (ViewModels.MenuItem parentMenuItem in this.NavMenuViewModel.MenuItems)
                 {
-                    if (parentMenuItem.AssemblyID == null || parentMenuItem.AssemblyID == 0 && parentMenuItem.Child.Count > 0)
+                    if ((parentMenuItem.AssemblyID == null || parentMenuItem.AssemblyID == 0 && parentMenuItem.Child.Count > 0) || (parentMenuItem.AssemblyID != null && parentMenuItem.Child.Count == 0))
                     {
                         <li class="menu-item @(this.ActiveMenuID == parentMenuItem.MenuID ? "open active" : "")" style="">
                             @if (this.ActiveMenuID == parentMenuItem.MenuID)
@@ -143,10 +143,20 @@
                             }
                             else
                             {
-                                <a href="#" @onclick="() => this.OnOpenMenuClick(parentMenuItem.MenuID)" class="menu-link @(parentMenuItem.Child.Count > 0 ? "menu-toggle" : "")">
-                                    <i class="menu-icon @parentMenuItem.Icon"></i>
-                                    <div data-i18n="Layouts" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</div>
-                                </a>
+                                @if (parentMenuItem.AssemblyID != null)
+                                {
+                                    <a href="#" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID, true)" class="menu-link @(parentMenuItem.Child.Count > 0 ? "menu-toggle" : "")">
+                                        <i class="menu-icon @parentMenuItem.Icon"></i>
+                                        <div data-i18n="Layouts" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</div>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="#" @onclick="() => this.OnOpenMenuClick(parentMenuItem.MenuID)" class="menu-link @(parentMenuItem.Child.Count > 0 ? "menu-toggle" : "")">
+                                        <i class="menu-icon @parentMenuItem.Icon"></i>
+                                        <div data-i18n="Layouts" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</div>
+                                    </a>
+                                }
                             }
 
                             @if (parentMenuItem.Child.Count > 0)
@@ -176,7 +186,7 @@
                                         else
                                         {
                                             <li class="menu-item @(this.ActiveAssemblyID == menuItem.AssemblyID ? "active" : "")">
-                                                <a @onclick="() => this.OnMenuClick(menuItem.MenuID, menuItem.AssemblyID)" href="#" class="menu-link" data-toggle="tooltip" title="@menuItem.Description">
+                                                <a @onclick="() => this.OnMenuClick(menuItem.MenuID, menuItem.AssemblyID, false)" href="#" class="menu-link" data-toggle="tooltip" title="@menuItem.Description">
                                                     <div data-i18n="@menuItem.Name">@menuItem.Name</div>
                                                 </a>
                                             </li>
@@ -209,7 +219,7 @@
                             }
                             else
                             {
-                                <a class="menu-link" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID)" href="#" data-toggle="tooltip" title="@parentMenuItem.Description">
+                                <a class="menu-link" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID, false)" href="#" data-toggle="tooltip" title="@parentMenuItem.Description">
                                     <i class="menu-icon @parentMenuItem.Icon"></i>
                                     <div data-i18n="Analytics">@parentMenuItem.Name</div>
                                 </a>

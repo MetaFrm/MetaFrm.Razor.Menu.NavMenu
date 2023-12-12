@@ -336,7 +336,7 @@ namespace MetaFrm.Razor.Menu
                 this.NavMenuViewModel.IsBusy = false;
             }
         }
-        private void OnMenuClick(int? menuID, int? assemblyID)
+        private void OnMenuClick(int? menuID, int? assemblyID, bool isActiveMenuID)
         {
             try
             {
@@ -345,6 +345,9 @@ namespace MetaFrm.Razor.Menu
                 this.NavMenuViewModel.IsBusy = true;
                 if (menuID != null && assemblyID != null)
                     this.OnAction(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { (int)menuID, (int)assemblyID } });
+
+                if (isActiveMenuID)
+                    this.ActiveMenuID = menuID;
 
                 this.ActiveAssemblyID = assemblyID;
 
