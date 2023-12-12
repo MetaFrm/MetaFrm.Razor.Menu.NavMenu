@@ -19,6 +19,7 @@ namespace MetaFrm.Razor.Menu
         internal NavMenuViewModel NavMenuViewModel { get; set; } = Factory.CreateViewModel<NavMenuViewModel>();
 
         private bool isFirstLoad = true;
+        private string DisplayInfo { get; set; } = string.Empty;
         private string DisplayName
         {
             get
@@ -184,7 +185,18 @@ namespace MetaFrm.Razor.Menu
                     if (response.DataSet != null && response.DataSet.DataTables.Count > 1 && response.DataSet.DataTables[1].DataRows.Count > 0)
                     {
                         foreach (Data.DataRow dataRow in response.DataSet.DataTables[1].DataRows)
+                        {
                             this.ProfileImage = dataRow.String("PROFILE_IMAGE");
+
+                            DateTime? dateTime = dataRow.DateTime("MEMBER_INACTIVE_DATE");
+                            if (dateTime != null && dateTime < DateTime.Now)
+                                dateTime = null;
+
+                            this.DisplayInfo = $"{dataRow.Decimal("POINT"):N0}P | {dataRow.Decimal("AKT"):N0}AK | Lv{dataRow.Int("LEVEL")} | {dataRow.Decimal("POINT_RATE"):P}{(dateTime == null ? "" : $" | {dateTime:MM-dd HH:mm}")} | {dataRow.Int("RUN_CURRENT")}/{dataRow.Int("RUN_TOTAL")}R";
+
+                            this.OnAction(this, new MetaFrmEventArgs { Action = "ProfileImage", Value = this.ProfileImage });
+                            this.OnAction(this, new MetaFrmEventArgs { Action = "DisplayInfo", Value = this.DisplayInfo });
+                        }
                     }
                 }
                 else
