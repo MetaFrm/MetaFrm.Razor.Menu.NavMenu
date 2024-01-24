@@ -188,11 +188,14 @@ namespace MetaFrm.Razor.Menu
                         {
                             this.ProfileImage = dataRow.String("PROFILE_IMAGE");
 
-                            DateTime? dateTime = dataRow.DateTime("MEMBER_INACTIVE_DATE");
-                            if (dateTime != null && dateTime < DateTime.Now)
-                                dateTime = null;
+                            if (dataRow.Values.ContainsKey("MEMBER_INACTIVE_DATE"))
+                            {
+                                DateTime? dateTime = dataRow.DateTime("MEMBER_INACTIVE_DATE");
+                                if (dateTime != null && dateTime < DateTime.Now)
+                                    dateTime = null;
 
-                            this.DisplayInfo = $"{dataRow.Decimal("POINT"):N0}P | {dataRow.Decimal("AKT"):N0}AK | Lv{dataRow.Int("LEVEL")} | {dataRow.Decimal("POINT_RATE"):P}{(dateTime == null ? "" : $" | {dateTime:MM-dd HH:mm}")} | {dataRow.Int("RUN_CURRENT")}/{dataRow.Int("RUN_TOTAL")}R";
+                                this.DisplayInfo = $"{dataRow.Decimal("POINT"):N0}P | {dataRow.Decimal("AKT"):N0}AK | Lv{dataRow.Int("LEVEL")} | {dataRow.Decimal("POINT_RATE"):P}{(dateTime == null ? "" : $" | {dateTime:MM-dd HH:mm}")} | {dataRow.Int("RUN_CURRENT")}/{dataRow.Int("RUN_TOTAL")}R";
+                            }
 
                             this.OnAction(this, new MetaFrmEventArgs { Action = "ProfileImage", Value = this.ProfileImage });
                             this.OnAction(this, new MetaFrmEventArgs { Action = "DisplayInfo", Value = this.DisplayInfo });
