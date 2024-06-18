@@ -186,24 +186,21 @@ namespace MetaFrm.Razor.Menu
                     {
                         foreach (Data.DataRow dataRow in response.DataSet.DataTables[1].DataRows)
                         {
-                            this.ProfileImage = dataRow.String("PROFILE_IMAGE");
-
+                            if (dataRow.Values.ContainsKey("PROFILE_IMAGE"))
+                            {
+                                this.ProfileImage = dataRow.String("PROFILE_IMAGE");
+                                this.OnAction(this, new MetaFrmEventArgs { Action = "ProfileImage", Value = this.ProfileImage });
+                            }
+                            else
+                                this.OnAction(this, new MetaFrmEventArgs { Action = "ProfileImage", Value = null });
 
                             if (dataRow.Values.ContainsKey("DISPLAY_INFO"))
                             {
                                 this.DisplayInfo = dataRow.String("DISPLAY_INFO") ?? "";
+                                this.OnAction(this, new MetaFrmEventArgs { Action = "DisplayInfo", Value = this.DisplayInfo });
                             }
-                            else if (dataRow.Values.ContainsKey("MEMBER_INACTIVE_DATE"))
-                            {
-                                DateTime? dateTime = dataRow.DateTime("MEMBER_INACTIVE_DATE");
-                                if (dateTime != null && dateTime < DateTime.Now)
-                                    dateTime = null;
-
-                                this.DisplayInfo = $"{dataRow.Decimal("POINT"):N0}P | {dataRow.Decimal("AKT"):N0}AK{(dateTime == null ? "" : $" | {dateTime:MM-dd HH:mm}")}<br />Lv{dataRow.Int("LEVEL")} | {dataRow.Decimal("POINT_RATE"):P2} | {dataRow.Int("RUN_CURRENT")}/{dataRow.Int("RUN_TOTAL")}R";
-                            }
-
-                            this.OnAction(this, new MetaFrmEventArgs { Action = "ProfileImage", Value = this.ProfileImage });
-                            this.OnAction(this, new MetaFrmEventArgs { Action = "DisplayInfo", Value = this.DisplayInfo });
+                            else
+                                this.OnAction(this, new MetaFrmEventArgs { Action = "DisplayInfo", Value = null });
                         }
                     }
                 }
