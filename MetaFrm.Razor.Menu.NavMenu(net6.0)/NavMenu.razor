@@ -13,11 +13,11 @@
                 <a class="navbar-brand" @onclick="() => this.OnMenuHomeClick()" href="#">
                     @if (!this.LogoImageUrl.IsNullOrEmpty() && this.LogoImageSize != null)
                     {
-                        <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@this.LogoText" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
+                        <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@Localization[this.LogoText ?? ""]" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
                     }
                     else
                     {
-                        @this.LogoText
+                        @Localization[this.LogoText ?? ""]
                     }
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" @onclick="this.ToggleNavMenu">
@@ -31,7 +31,7 @@
                             if (parentMenuItem.AssemblyID == null || parentMenuItem.AssemblyID == 0 && parentMenuItem.Child.Count > 0)
                             {
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</a>
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">@Localization[parentMenuItem.Name ?? ""]</a>
                                     <div class="dropdown-menu">
                                         @foreach (ViewModels.MenuItem menuItem in parentMenuItem.Child)
                                         {
@@ -39,16 +39,16 @@
                                             {
                                                 @if (Factory.Platform == DevicePlatform.Web || Factory.Platform == DevicePlatform.WinForms || Factory.Platform == DevicePlatform.WPF)
                                                 {
-                                                    <a class="dropdown-item" href="@menuItem.Description" target="_blank" data-toggle="tooltip" title="@menuItem.Description">&nbsp;&nbsp;@menuItem.Name</a>
+                                                    <a class="dropdown-item" href="@menuItem.Description" target="_blank" data-toggle="tooltip" title="@Localization[menuItem.Description ?? ""]">&nbsp;&nbsp;@Localization[menuItem.Name ?? ""]</a>
                                                 }
                                                 else
                                                 {
-                                                    <a class="dropdown-item" @onclick="() => this.OnMenuClick(menuItem.Description)" href="#" data-toggle="tooltip" title="@menuItem.Description">&nbsp;&nbsp;@menuItem.Name</a>
+                                                    <a class="dropdown-item" @onclick="() => this.OnMenuClick(menuItem.Description)" href="#" data-toggle="tooltip" title="@Localization[menuItem.Description ?? ""]">&nbsp;&nbsp;@Localization[menuItem.Name ?? ""]</a>
                                                 }
                                             }
                                             else
                                             {
-                                                <a class="dropdown-item" @onclick="() => this.OnMenuClick(menuItem.MenuID, menuItem.AssemblyID, false)" href="#" data-toggle="tooltip" title="@menuItem.Description">&nbsp;&nbsp;@menuItem.Name</a>
+                                                <a class="dropdown-item" @onclick="() => this.OnMenuClick(menuItem.MenuID, menuItem.AssemblyID, false)" href="#" data-toggle="tooltip" title="@Localization[menuItem.Description ?? ""]">&nbsp;&nbsp;@Localization[menuItem.Name ?? ""]</a>
                                             }
                                         }
                                     </div>
@@ -61,16 +61,16 @@
                                     {
                                         @if (Factory.Platform == DevicePlatform.Web || Factory.Platform == DevicePlatform.WinForms || Factory.Platform == DevicePlatform.WPF)
                                         {
-                                            <a class="nav-link" href="@parentMenuItem.Description" target="_blank" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</a>
+                                            <a class="nav-link" href="@parentMenuItem.Description" target="_blank" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">@Localization[parentMenuItem.Name ?? ""]</a>
                                         }
                                         else
                                         {
-                                            <a class="nav-link" @onclick="() => this.OnMenuClick(parentMenuItem.Description)" href="#" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</a>
+                                            <a class="nav-link" @onclick="() => this.OnMenuClick(parentMenuItem.Description)" href="#" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">@Localization[parentMenuItem.Name ?? ""]</a>
                                         }
                                     }
                                     else
                                     {
-                                        <a class="nav-link" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID, false)" href="#" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</a>
+                                        <a class="nav-link" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID, false)" href="#" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">@Localization[@parentMenuItem.Name ?? ""]</a>
                                     }
                                 </li>
                             }
@@ -92,18 +92,18 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnLogoutClick"><i class="bi bi-box-arrow-right" /> Sign out</button>
+                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnLogoutClick"><i class="bi bi-box-arrow-right" /> @Localization["로그아웃"]</button>
                                 </li>
                             </Authorized>
                             <NotAuthorized>
                                 <li class="nav-item me-2">
-                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnLoginClick"><i class="bi bi-box-arrow-in-left" /> Sign in</button>
+                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnLoginClick"><i class="bi bi-box-arrow-in-left" /> @Localization["로그인"]</button>
                                 </li>
                                 <li class="nav-item me-2">
-                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnRegisterClick">Register</button>
+                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnRegisterClick">@Localization["가입하기"]</button>
                                 </li>
                                 <li class="nav-item me-2">
-                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnPasswordResetClick">Password Reset</button>
+                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnPasswordResetClick">@Localization["암호 재설정"]</button>
                                 </li>
                             </NotAuthorized>
                         </AuthorizeView>
@@ -120,14 +120,14 @@
                     <span class="app-brand-logo demo">
                         @if (this.LogoImageSize != null)
                         {
-                            <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@this.LogoText" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
+                            <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@Localization[this.LogoText ?? ""]" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
                         }
                         else
                         {
-                            @this.LogoText
+                            @Localization[this.LogoText ?? ""]
                         }
                     </span>
-                    <span class="app-brand-text demo menu-text fw-bolder ms-2">@this.LogoText</span>
+                    <span class="app-brand-text demo menu-text fw-bolder ms-2">@Localization[this.LogoText ?? ""]</span>
                 </a>
 
                 <a href="#" @onclick="() => this.OnLayoutMenuExpandeClick()" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
@@ -145,7 +145,7 @@
                             {
                                 <a href="#" class="menu-link @(parentMenuItem.Child.Count > 0 ? "menu-toggle" : "") active">
                                     <i class="menu-icon @parentMenuItem.Icon"></i>
-                                    <div data-i18n="Layouts" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</div>
+                                    <div data-i18n="@Localization[parentMenuItem.Name ?? ""]" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">@Localization[parentMenuItem.Name ?? ""]</div>
                                 </a>
                             }
                             else
@@ -154,14 +154,14 @@
                                 {
                                     <a href="#" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID, true)" class="menu-link @(parentMenuItem.Child.Count > 0 ? "menu-toggle" : "")">
                                         <i class="menu-icon @parentMenuItem.Icon"></i>
-                                        <div data-i18n="Layouts" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</div>
+                                        <div data-i18n="@Localization[parentMenuItem.Name ?? ""]" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">@Localization[parentMenuItem.Name ?? ""]</div>
                                     </a>
                                 }
                                 else
                                 {
                                     <a href="#" @onclick="() => this.OnOpenMenuClick(parentMenuItem.MenuID)" class="menu-link @(parentMenuItem.Child.Count > 0 ? "menu-toggle" : "")">
                                         <i class="menu-icon @parentMenuItem.Icon"></i>
-                                        <div data-i18n="Layouts" data-toggle="tooltip" title="@parentMenuItem.Description">@parentMenuItem.Name</div>
+                                        <div data-i18n="@Localization[parentMenuItem.Name ?? ""]" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">@Localization[parentMenuItem.Name ?? ""]</div>
                                     </a>
                                 }
                             }
@@ -176,16 +176,16 @@
                                             @if (Factory.Platform == DevicePlatform.Web || Factory.Platform == DevicePlatform.WinForms || Factory.Platform == DevicePlatform.WPF)
                                             {
                                                 <li class="menu-item @(this.ActiveAssemblyID == menuItem.AssemblyID ? "active" : "")">
-                                                    <a href="@menuItem.Description" target="_blank" class="menu-link" data-toggle="tooltip" title="@menuItem.Description">
-                                                        <div data-i18n="@menuItem.Name">@menuItem.Name</div>
+                                                    <a href="@menuItem.Description" target="_blank" class="menu-link" data-toggle="tooltip" title="@Localization[menuItem.Description ?? ""]">
+                                                        <div data-i18n="@Localization[@menuItem.Name ?? ""]">@Localization[menuItem.Name ?? ""]</div>
                                                     </a>
                                                 </li>
                                             }
                                             else
                                             {
                                                 <li class="menu-item @(this.ActiveAssemblyID == menuItem.AssemblyID ? "active" : "")">
-                                                    <a @onclick="() => this.OnMenuClick(menuItem.Description)" href="#" class="menu-link" data-toggle="tooltip" title="@menuItem.Description">
-                                                        <div data-i18n="@menuItem.Name">@menuItem.Name</div>
+                                                    <a @onclick="() => this.OnMenuClick(menuItem.Description)" href="#" class="menu-link" data-toggle="tooltip" title="@Localization[menuItem.Description ?? ""]">
+                                                        <div data-i18n="@Localization[menuItem.Name ?? ""]">@Localization[menuItem.Name ?? ""]</div>
                                                     </a>
                                                 </li>
                                             }
@@ -193,8 +193,8 @@
                                         else
                                         {
                                             <li class="menu-item @(this.ActiveAssemblyID == menuItem.AssemblyID ? "active" : "")">
-                                                <a @onclick="() => this.OnMenuClick(menuItem.MenuID, menuItem.AssemblyID, false)" href="#" class="menu-link" data-toggle="tooltip" title="@menuItem.Description">
-                                                    <div data-i18n="@menuItem.Name">@menuItem.Name</div>
+                                                <a @onclick="() => this.OnMenuClick(menuItem.MenuID, menuItem.AssemblyID, false)" href="#" class="menu-link" data-toggle="tooltip" title="@Localization[menuItem.Description ?? ""]">
+                                                    <div data-i18n="@Localization[menuItem.Name ?? ""]">@Localization[menuItem.Name ?? ""]</div>
                                                 </a>
                                             </li>
                                         }
@@ -210,25 +210,24 @@
                             {
                                 @if (Factory.Platform == DevicePlatform.Web || Factory.Platform == DevicePlatform.WinForms || Factory.Platform == DevicePlatform.WPF)
                                 {
-                                    <a class="menu-link" href="@parentMenuItem.Description" target="_blank" data-toggle="tooltip" title="@parentMenuItem.Description">
+                                    <a class="menu-link" href="@parentMenuItem.Description" target="_blank" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">
                                         <i class="menu-icon @parentMenuItem.Icon"></i>
-                                        <div data-i18n="Analytics">@parentMenuItem.Name</div>
+                                        <div data-i18n="@Localization[parentMenuItem.Name ?? ""]">@Localization[parentMenuItem.Name ?? ""]</div>
                                     </a>
                                 }
                                 else
                                 {
-                                    <a class="menu-link" @onclick="() => this.OnMenuClick(parentMenuItem.Description)" href="#" data-toggle="tooltip" title="@parentMenuItem.Description">
+                                    <a class="menu-link" @onclick="() => this.OnMenuClick(parentMenuItem.Description)" href="#" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">
                                         <i class="menu-icon @parentMenuItem.Icon"></i>
-                                        <div data-i18n="Analytics">@parentMenuItem.Name</div>
+                                        <div data-i18n="@Localization[parentMenuItem.Name ?? ""]">@Localization[parentMenuItem.Name ?? ""]</div>
                                     </a>
                                 }
-
                             }
                             else
                             {
-                                <a class="menu-link" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID, false)" href="#" data-toggle="tooltip" title="@parentMenuItem.Description">
+                                <a class="menu-link" @onclick="() => this.OnMenuClick(parentMenuItem.MenuID, parentMenuItem.AssemblyID, false)" href="#" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">
                                     <i class="menu-icon @parentMenuItem.Icon"></i>
-                                    <div data-i18n="Analytics">@parentMenuItem.Name</div>
+                                    <div data-i18n="@Localization[parentMenuItem.Name ?? ""]">@Localization[parentMenuItem.Name ?? ""]</div>
                                 </a>
                             }
                         </li>
