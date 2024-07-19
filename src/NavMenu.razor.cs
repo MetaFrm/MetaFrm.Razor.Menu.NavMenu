@@ -81,6 +81,10 @@ namespace MetaFrm.Razor.Menu
                 {
                     this.HomeMenu();
                 }
+
+                if (Factory.Platform == DevicePlatform.iOS || Factory.Platform == DevicePlatform.Android || Factory.Platform == DevicePlatform.WinUI)
+                    if (this.AuthState != null && this.AuthState.IsLogin() && Essentials.Localization.LocalizationManager.AuthState == null)
+                        MetaFrm.Razor.Essentials.Localization.LocalizationManager.AuthState = this.AuthState;
             }
             else
             {

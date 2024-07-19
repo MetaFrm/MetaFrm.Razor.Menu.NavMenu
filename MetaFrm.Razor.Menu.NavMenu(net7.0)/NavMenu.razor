@@ -13,11 +13,11 @@
                 <a class="navbar-brand" @onclick="() => this.OnMenuHomeClick()" href="#">
                     @if (!this.LogoImageUrl.IsNullOrEmpty() && this.LogoImageSize != null)
                     {
-                        <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@Localization[this.LogoText ?? ""]" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
+                        <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@this.LogoText" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
                     }
                     else
                     {
-                        @Localization[this.LogoText ?? ""]
+                        @this.LogoText
                     }
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" @onclick="this.ToggleNavMenu">
@@ -120,14 +120,14 @@
                     <span class="app-brand-logo demo">
                         @if (this.LogoImageSize != null)
                         {
-                            <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@Localization[this.LogoText ?? ""]" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
+                            <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@this.LogoText" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
                         }
                         else
                         {
-                            @Localization[this.LogoText ?? ""]
+                            @this.LogoText
                         }
                     </span>
-                    <span class="app-brand-text demo menu-text fw-bolder ms-2">@Localization[this.LogoText ?? ""]</span>
+                    <span class="app-brand-text demo menu-text fw-bolder ms-2">@this.LogoText</span>
                 </a>
 
                 <a href="#" @onclick="() => this.OnLayoutMenuExpandeClick()" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
