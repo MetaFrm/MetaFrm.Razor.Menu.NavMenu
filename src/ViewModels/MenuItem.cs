@@ -36,6 +36,6 @@
         /// <summary>
         /// Child
         /// </summary>
-        public List<MenuItem> Child { get; set; } = new();
+        public List<MenuItem> Child { get; set; } = [];
     }
 }

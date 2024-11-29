@@ -8,8 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0F4637A3-337
 		src\NavMenu.razor.cs = src\NavMenu.razor.cs
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaFrm.Razor.Menu.NavMenu(net6.0)", "MetaFrm.Razor.Menu.NavMenu(net6.0)\MetaFrm.Razor.Menu.NavMenu(net6.0).csproj", "{492A4F4A-93A6-41ED-858F-7804F1805D8B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ViewModels", "ViewModels", "{CC1E8AD2-91E5-47C1-8F53-293A9A0CD3B2}"
 	ProjectSection(SolutionItems) = preProject
 		src\ViewModels\MenuItem.cs = src\ViewModels\MenuItem.cs
@@ -20,9 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{51E7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{1371C18F-0AF9-4D2B-A48A-E5AF80B99DED}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\build_6.0.yml = .github\workflows\build_6.0.yml
-		.github\workflows\build_7.0.yml = .github\workflows\build_7.0.yml
 		.github\workflows\build_8.0.yml = .github\workflows\build_8.0.yml
+		.github\workflows\build_9.0.yml = .github\workflows\build_9.0.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루션 항목", "{8649DBA9-1C66-4861-BFF9-32BF8014EDCB}"
@@ -32,9 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루�
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaFrm.Razor.Menu.NavMenu(net7.0)", "MetaFrm.Razor.Menu.NavMenu(net7.0)\MetaFrm.Razor.Menu.NavMenu(net7.0).csproj", "{B2AEF577-9F1A-4D92-94B4-5AB29B4E9B7E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaFrm.Razor.Menu.NavMenu(net8.0)", "MetaFrm.Razor.Menu.NavMenu(net8.0)\MetaFrm.Razor.Menu.NavMenu(net8.0).csproj", "{935CD288-8FF5-47E8-870C-0081C6490271}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaFrm.Razor.Menu.NavMenu(net9.0)", "MetaFrm.Razor.Menu.NavMenu(net9.0)\MetaFrm.Razor.Menu.NavMenu(net9.0).csproj", "{723D9034-F535-4203-90FB-0F9334701AEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,18 +39,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{492A4F4A-93A6-41ED-858F-7804F1805D8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{492A4F4A-93A6-41ED-858F-7804F1805D8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{492A4F4A-93A6-41ED-858F-7804F1805D8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{492A4F4A-93A6-41ED-858F-7804F1805D8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2AEF577-9F1A-4D92-94B4-5AB29B4E9B7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2AEF577-9F1A-4D92-94B4-5AB29B4E9B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2AEF577-9F1A-4D92-94B4-5AB29B4E9B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2AEF577-9F1A-4D92-94B4-5AB29B4E9B7E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{935CD288-8FF5-47E8-870C-0081C6490271}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{935CD288-8FF5-47E8-870C-0081C6490271}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{935CD288-8FF5-47E8-870C-0081C6490271}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{935CD288-8FF5-47E8-870C-0081C6490271}.Release|Any CPU.Build.0 = Release|Any CPU
+		{723D9034-F535-4203-90FB-0F9334701AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{723D9034-F535-4203-90FB-0F9334701AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{723D9034-F535-4203-90FB-0F9334701AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{723D9034-F535-4203-90FB-0F9334701AEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

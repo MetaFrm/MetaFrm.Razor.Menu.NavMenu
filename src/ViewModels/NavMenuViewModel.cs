@@ -1,5 +1,4 @@
 ﻿using MetaFrm.MVVM;
-using Microsoft.AspNetCore.Components;
 
 namespace MetaFrm.Razor.Menu.ViewModels
 {
@@ -23,6 +22,6 @@ namespace MetaFrm.Razor.Menu.ViewModels
         /// <summary>
         /// MenuItems
         /// </summary>
-        public List<MenuItem> MenuItems { get; set; } = new();
+        public List<MenuItem> MenuItems { get; set; } = [];
     }
 }

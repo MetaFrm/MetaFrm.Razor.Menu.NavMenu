@@ -169,7 +169,7 @@ namespace MetaFrm.Razor.Menu
                             }
                             else
                             {
-                                this.FindParent(this.NavMenuViewModel.MenuItems, dataRow.Int("PARENT_MENU_ID"))?.Child.Add(new()
+                                FindParent(this.NavMenuViewModel.MenuItems, dataRow.Int("PARENT_MENU_ID"))?.Child.Add(new()
                                 {
                                     MenuID = dataRow.Int("MENU_ID"),
                                     ParentMenuID = dataRow.Int("PARENT_MENU_ID"),
@@ -267,7 +267,7 @@ namespace MetaFrm.Razor.Menu
         private void OnClickFunction(string action)
         {
         }
-        private MenuItem? FindParent(List<MenuItem> menuItems, int? parentMenuID)
+        private static MenuItem? FindParent(List<MenuItem> menuItems, int? parentMenuID)
         {
             MenuItem? item;
 
@@ -278,7 +278,7 @@ namespace MetaFrm.Razor.Menu
 
                 if (menuItem.Child.Count > 0)
                 {
-                    item = this.FindParent(menuItem.Child, parentMenuID);
+                    item = FindParent(menuItem.Child, parentMenuID);
 
                     if (item != null)
                         return item;
