@@ -33,7 +33,7 @@ namespace MetaFrm.Razor.Menu
         private string? ProfileImage { get; set; }
 
         [Inject] IBrowser? Browser { get; set; }
-
+        private bool IsLogoView { get; set; } = true;
         private string? LogoImageUrl { get; set; }
         private Size? LogoImageSize { get; set; }
         private string? LogoText { get; set; }
@@ -54,6 +54,8 @@ namespace MetaFrm.Razor.Menu
         protected override void OnInitialized()
         {
             base.OnInitialized();
+
+            this.IsLogoView = this.GetAttributeBool("IsLogoView");
 
             this.LogoImageUrl = this.GetAttribute("LogoImageUrl");
 

@@ -11,13 +11,16 @@
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" @onclick="() => this.OnMenuHomeClick()" href="#">
-                    @if (!this.LogoImageUrl.IsNullOrEmpty() && this.LogoImageSize != null)
+                    @if (this.IsLogoView)
                     {
-                        <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@this.LogoText" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
-                    }
-                    else
-                    {
-                        @this.LogoText
+                        @if (!this.LogoImageUrl.IsNullOrEmpty() && this.LogoImageSize != null)
+                        {
+                            <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@this.LogoText" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
+                        }
+                        else
+                        {
+                            @this.LogoText
+                        }
                     }
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" @onclick="this.ToggleNavMenu">
@@ -115,25 +118,32 @@
 
     case "sneat":
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" data-bg-class="bg-menu-theme">
-            <div class="app-brand demo ">
-                <a href="#" class="app-brand-link">
-                    <span class="app-brand-logo demo">
-                        @if (this.LogoImageSize != null)
-                        {
-                            <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@this.LogoText" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
-                        }
-                        else
-                        {
-                            @this.LogoText
-                        }
-                    </span>
-                    <span class="app-brand-text demo menu-text fw-bolder ms-2">@this.LogoText</span>
-                </a>
+            @if (this.IsLogoView)
+            {
+                <div class="app-brand demo ">
+                    <a href="#" class="app-brand-link">
+                        <span class="app-brand-logo demo">
+                            @if (this.LogoImageSize != null)
+                            {
+                                <img src="@this.LogoImageUrl" data-toggle="tooltip" title="@this.LogoText" width="@this.LogoImageSize.Value.Width" height="@this.LogoImageSize.Value.Height" />
+                            }
+                            else
+                            {
+                                @this.LogoText
+                            }
+                        </span>
+                        <span class="app-brand-text demo menu-text fw-bolder ms-2">@this.LogoText</span>
+                    </a>
 
-                <a href="#" @onclick="() => this.OnLayoutMenuExpandeClick()" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
-                    <i class="bx bx-chevron-left bx-sm align-middle"></i>
-                </a>
-            </div>
+                    <a href="#" @onclick="() => this.OnLayoutMenuExpandeClick()" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
+                        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="m-1"></div>
+            }
             <div class="menu-inner-shadow"></div>
             <ul class="menu-inner py-1 ps">
                 @foreach (ViewModels.MenuItem parentMenuItem in this.NavMenuViewModel.MenuItems)
