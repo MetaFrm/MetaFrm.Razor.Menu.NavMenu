@@ -37,6 +37,7 @@ namespace MetaFrm.Razor.Menu
         private string? LogoImageUrl { get; set; }
         private Size? LogoImageSize { get; set; }
         private string? LogoText { get; set; }
+        private bool IsLoginView { get; set; } = true;
 
         [Inject]
         internal IDeviceInfo? DeviceInfo { get; set; }
@@ -67,6 +68,8 @@ namespace MetaFrm.Razor.Menu
                 this.LogoImageSize = new Size(tmps[0].ToInt(), tmps[1].ToInt());
             }
             this.LogoText = this.GetAttribute("LogoText");
+
+            this.IsLoginView = this.GetAttributeBool("IsLoginView");
         }
 
         /// <summary>

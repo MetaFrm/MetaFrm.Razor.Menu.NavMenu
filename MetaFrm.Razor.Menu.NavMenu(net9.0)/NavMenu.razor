@@ -82,35 +82,38 @@
                             <hr class="hr-s1" />
                         </li>
                     </ul>
-                    <ul class="navbar-nav">
-                        <AuthorizeView>
-                            <Authorized>
-                                <li class="nav-item me-2">
-                                    <a class="nav-link" href="#" data-toggle="tooltip" title="@this.DisplayName" @onclick="this.OnProfileClick">
-                                        @if (!this.ProfileImage.IsNullOrEmpty())
-                                        {
-                                            <img class="rounded-pill me-2" alt="Profile" width="30" height="30" src="@this.ProfileImage" />
-                                        }
-                                        @this.DisplayName
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnLogoutClick"><i class="bi bi-box-arrow-right" /> @Localization["로그아웃"]</button>
-                                </li>
-                            </Authorized>
-                            <NotAuthorized>
-                                <li class="nav-item me-2">
-                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnLoginClick"><i class="bi bi-box-arrow-in-left" /> @Localization["로그인"]</button>
-                                </li>
-                                <li class="nav-item me-2">
-                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnRegisterClick">@Localization["가입하기"]</button>
-                                </li>
-                                <li class="nav-item me-2">
-                                    <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnPasswordResetClick">@Localization["암호 재설정"]</button>
-                                </li>
-                            </NotAuthorized>
-                        </AuthorizeView>
-                    </ul>
+                    @if (this.IsLoginView)
+                    {
+                        <ul class="navbar-nav">
+                            <AuthorizeView>
+                                <Authorized>
+                                    <li class="nav-item me-2">
+                                        <a class="nav-link" href="#" data-toggle="tooltip" title="@this.DisplayName" @onclick="this.OnProfileClick">
+                                            @if (!this.ProfileImage.IsNullOrEmpty())
+                                            {
+                                                <img class="rounded-pill me-2" alt="Profile" width="30" height="30" src="@this.ProfileImage" />
+                                            }
+                                            @this.DisplayName
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnLogoutClick"><i class="bi bi-box-arrow-right" /> @Localization["로그아웃"]</button>
+                                    </li>
+                                </Authorized>
+                                <NotAuthorized>
+                                    <li class="nav-item me-2">
+                                        <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnLoginClick"><i class="bi bi-box-arrow-in-left" /> @Localization["로그인"]</button>
+                                    </li>
+                                    <li class="nav-item me-2">
+                                        <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnRegisterClick">@Localization["가입하기"]</button>
+                                    </li>
+                                    <li class="nav-item me-2">
+                                        <button type="button" class="btn btn-secondary py-1 my-1" @onclick="this.OnPasswordResetClick">@Localization["암호 재설정"]</button>
+                                    </li>
+                                </NotAuthorized>
+                            </AuthorizeView>
+                        </ul>
+                    }
                 </div>
             </div>
         </nav>
