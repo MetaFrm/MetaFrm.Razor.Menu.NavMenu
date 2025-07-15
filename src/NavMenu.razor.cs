@@ -16,7 +16,7 @@ namespace MetaFrm.Razor.Menu
     /// </summary>
     public partial class NavMenu
     {
-        internal NavMenuViewModel NavMenuViewModel { get; set; } = Factory.CreateViewModel<NavMenuViewModel>();
+        internal NavMenuViewModel NavMenuViewModel { get; set; } = new();
 
         private bool isFirstLoad = true;
         private string DisplayInfo { get; set; } = string.Empty;
@@ -48,6 +48,7 @@ namespace MetaFrm.Razor.Menu
         private int? ActiveMenuID { get; set; } = null;
 
         private int? ActiveAssemblyID { get; set; } = null;
+        private string TemplateName { get; set; } = string.Empty;
 
         /// <summary>
         /// OnInitialized
@@ -56,20 +57,50 @@ namespace MetaFrm.Razor.Menu
         {
             base.OnInitialized();
 
-            this.IsLogoView = this.GetAttributeBool("IsLogoView");
+            this.NavMenuViewModel = this.CreateViewModel<NavMenuViewModel>();
 
-            this.LogoImageUrl = this.GetAttribute("LogoImageUrl");
+            try
+            {
+                if (this.Layout != null)
+                {
+                    this.Layout.Action -= Layout_Action;
+                    this.Layout.Action += Layout_Action;
+                }
+            }
+            catch (Exception)
+            {
+            }
 
-            string? tmp = this.GetAttribute("LogoImageSize");
+            this.IsLogoView = this.GetAttributeBool(nameof(this.IsLogoView));
+
+            this.LogoImageUrl = this.GetAttribute(nameof(this.LogoImageUrl));
+
+            string? tmp = this.GetAttribute(nameof(this.LogoImageSize));
             string[]? tmps;
             if (!tmp.IsNullOrEmpty())
             {
                 tmps = tmp.Split(',');
                 this.LogoImageSize = new Size(tmps[0].ToInt(), tmps[1].ToInt());
             }
-            this.LogoText = this.GetAttribute("LogoText");
+            this.LogoText = this.GetAttribute(nameof(this.LogoText));
 
-            this.IsLoginView = this.GetAttributeBool("IsLoginView");
+            this.IsLoginView = this.GetAttributeBool(nameof(this.IsLoginView));
+
+            this.TemplateName = this.GetAttribute(nameof(this.TemplateName));
+        }
+
+        private void Layout_Action(ICore sender, MetaFrmEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case "Menu.Active":
+                    if (e.Value != null && e.Value is List<int> ints && ints.Count > 1)
+                    {
+                        this.ActiveMenuID = ints[0];
+                        this.ActiveAssemblyID = ints[1];
+                    }
+                    break;
+            }
         }
 
         /// <summary>
@@ -83,13 +114,7 @@ namespace MetaFrm.Razor.Menu
             if (firstRender)
             {
                 if (Factory.Platform != Maui.Devices.DevicePlatform.Web)
-                {
                     this.HomeMenu();
-                }
-
-                if (Factory.Platform == DevicePlatform.iOS || Factory.Platform == DevicePlatform.Android || Factory.Platform == DevicePlatform.WinUI)
-                    if (this.AuthState != null && this.AuthState.IsLogin() && Essentials.Localization.LocalizationManager.AuthState == null)
-                        MetaFrm.Razor.Essentials.Localization.LocalizationManager.AuthState = this.AuthState;
             }
             else
             {
@@ -297,7 +322,7 @@ namespace MetaFrm.Razor.Menu
         {
             this.NavMenuViewModel.CollapseNavMenu = !this.NavMenuViewModel.CollapseNavMenu;
 
-            if ((Factory.ProjectService.GetAttributeValue("Template.Name") ?? "") == "sneat")
+            if (this.TemplateName == "sneat")
                 if (this.JSRuntime != null)
                     await this.JSRuntime.InvokeVoidAsync("LayoutMenuInit");
         }
@@ -467,7 +492,7 @@ namespace MetaFrm.Razor.Menu
 
         private async void OnLayoutMenuExpandeClick()
         {
-            if ((Factory.ProjectService.GetAttributeValue("Template.Name") ?? "") == "sneat")
+            if (this.TemplateName == "sneat")
                 if (this.JSRuntime != null)
                     await this.JSRuntime.InvokeVoidAsync("LayoutMenuExpande");
         }
