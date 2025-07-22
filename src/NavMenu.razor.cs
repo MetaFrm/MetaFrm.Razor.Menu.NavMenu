@@ -14,9 +14,9 @@ namespace MetaFrm.Razor.Menu
     /// <summary>
     /// MetaFrm.Razor.Menu
     /// </summary>
-    public partial class NavMenu
+    public partial class NavMenu : IDisposable
     {
-        internal NavMenuViewModel NavMenuViewModel { get; set; } = new();
+        private NavMenuViewModel NavMenuViewModel { get; set; } = new(null);
 
         private bool isFirstLoad = true;
         private string DisplayInfo { get; set; } = string.Empty;
@@ -32,7 +32,9 @@ namespace MetaFrm.Razor.Menu
         }
         private string? ProfileImage { get; set; }
 
-        [Inject] IBrowser? Browser { get; set; }
+        [Inject]
+        private IBrowser? Browser { get; set; }
+
         private bool IsLogoView { get; set; } = true;
         private string? LogoImageUrl { get; set; }
         private Size? LogoImageSize { get; set; }
@@ -40,13 +42,12 @@ namespace MetaFrm.Razor.Menu
         private bool IsLoginView { get; set; } = true;
 
         [Inject]
-        internal IDeviceInfo? DeviceInfo { get; set; }
+        private IDeviceInfo? DeviceInfo { get; set; }
 
         [Inject]
-        internal IDeviceToken? DeviceToken { get; set; }
+        private IDeviceToken? DeviceToken { get; set; }
 
         private int? ActiveMenuID { get; set; } = null;
-
         private int? ActiveAssemblyID { get; set; } = null;
         private string TemplateName { get; set; } = string.Empty;
 
@@ -72,7 +73,6 @@ namespace MetaFrm.Razor.Menu
             }
 
             this.IsLogoView = this.GetAttributeBool(nameof(this.IsLogoView));
-
             this.LogoImageUrl = this.GetAttribute(nameof(this.LogoImageUrl));
 
             string? tmp = this.GetAttribute(nameof(this.LogoImageSize));
@@ -82,10 +82,9 @@ namespace MetaFrm.Razor.Menu
                 tmps = tmp.Split(',');
                 this.LogoImageSize = new Size(tmps[0].ToInt(), tmps[1].ToInt());
             }
+
             this.LogoText = this.GetAttribute(nameof(this.LogoText));
-
             this.IsLoginView = this.GetAttributeBool(nameof(this.IsLoginView));
-
             this.TemplateName = this.GetAttribute(nameof(this.TemplateName));
         }
 
@@ -123,6 +122,26 @@ namespace MetaFrm.Razor.Menu
             }
         }
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.Layout != null)
+                    this.Layout.Action -= Layout_Action;
+            }
+        }
 
         private void HomeMenu()
         {
@@ -135,27 +154,26 @@ namespace MetaFrm.Razor.Menu
         }
         private async void SelectMenu()
         {
+            ServiceData serviceData;
             Response response;
+
+            if (this.NavMenuViewModel.IsBusy) return;
 
             try
             {
-                if (this.NavMenuViewModel.IsBusy) return;
-
                 this.NavMenuViewModel.IsBusy = true;
-
-                ServiceData data;
 
                 if (this.AuthState.IsLogin())
                 {
-                    data = new()
+                    serviceData = new()
                     {
                         Token = this.AuthState.Token()
                     };
 
-                    data["1"].CommandText = this.GetAttribute("Select.Menu");
-                    data["1"].AddParameter("START_MENU_ID", DbType.Int, 3, null);
-                    data["1"].AddParameter("ONLY_PARENT_MENU_ID", DbType.Int, 3, null);
-                    data["1"].AddParameter("USER_ID", DbType.Int, 3, this.AuthState.UserID());
+                    serviceData["1"].CommandText = this.GetAttribute("Select.Menu");
+                    serviceData["1"].AddParameter("START_MENU_ID", DbType.Int, 3, null);
+                    serviceData["1"].AddParameter("ONLY_PARENT_MENU_ID", DbType.Int, 3, null);
+                    serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.AuthState.UserID());
 
                     if (this.DeviceToken != null)
                     {
@@ -167,15 +185,15 @@ namespace MetaFrm.Razor.Menu
                 }
                 else
                 {
-                    data = new()
+                    serviceData = new()
                     {
                         Token = Factory.AccessKey
                     };
-                    data["1"].CommandText = this.GetAttribute("Select.MenuDefault");
-                    data["1"].AddParameter("USER_ID", DbType.Int, 3, null);
+                    serviceData["1"].CommandText = this.GetAttribute("Select.MenuDefault");
+                    serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, null);
                 }
 
-                response = this.ServiceRequest(data);
+                response = this.ServiceRequest(serviceData);
 
                 if (response.Status == Status.OK)
                 {
@@ -186,7 +204,7 @@ namespace MetaFrm.Razor.Menu
                         {
                             if (dataRow.Int("PARENT_MENU_ID") == 0)
                             {
-                                this.NavMenuViewModel.MenuItems.Add(new()
+                                this.NavMenuViewModel.MenuItems.Add(new(this.Localization)
                                 {
                                     MenuID = dataRow.Int("MENU_ID"),
                                     ParentMenuID = dataRow.Int("PARENT_MENU_ID"),
@@ -199,7 +217,7 @@ namespace MetaFrm.Razor.Menu
                             }
                             else
                             {
-                                FindParent(this.NavMenuViewModel.MenuItems, dataRow.Int("PARENT_MENU_ID"))?.Child.Add(new()
+                                FindParent(this.NavMenuViewModel.MenuItems, dataRow.Int("PARENT_MENU_ID"))?.Child.Add(new(this.Localization)
                                 {
                                     MenuID = dataRow.Int("MENU_ID"),
                                     ParentMenuID = dataRow.Int("PARENT_MENU_ID"),
@@ -242,13 +260,13 @@ namespace MetaFrm.Razor.Menu
                 {
                     if (response.Message != null)
                     {
-                        this.ModalShow("LoadMenu", response.Message, new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+                        this.ModalShow("메뉴", response.Message, new() { { "Ok", Btn.Warning } }, null);
                     }
                 }
             }
             catch (Exception ex)
             {
-                this.ModalShow("LoadMenu", $"{ex}", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+                this.ModalShow("메뉴", $"{ex}", new() { { "Ok", Btn.Warning } }, null);
             }
             finally
             {
@@ -285,23 +303,20 @@ namespace MetaFrm.Razor.Menu
                 else
                 {
                     if (response != null && response.Message != null)
-                        this.ModalShow("SaveToken", response.Message, new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+                        this.ModalShow("메뉴", response.Message, new() { { "Ok", Btn.Warning } }, null);
                 }
             }
             catch (Exception ex)
             {
-                this.ModalShow("SaveToken", $"{ex}", new() { { "Ok", Btn.Warning } }, EventCallback.Factory.Create<string>(this, OnClickFunction));
+                this.ModalShow("메뉴", $"{ex}", new() { { "Ok", Btn.Warning } }, null);
             }
         }
 
-        private void OnClickFunction(string action)
+        private static MenuItemModel? FindParent(List<MenuItemModel> menuItems, int? parentMenuID)
         {
-        }
-        private static MenuItem? FindParent(List<MenuItem> menuItems, int? parentMenuID)
-        {
-            MenuItem? item;
+            MenuItemModel? item;
 
-            foreach (MenuItem menuItem in menuItems)
+            foreach (MenuItemModel menuItem in menuItems)
             {
                 if (menuItem.MenuID == parentMenuID)
                     return menuItem;
@@ -329,10 +344,10 @@ namespace MetaFrm.Razor.Menu
 
         private void OnMenuHomeClick()
         {
+            if (this.NavMenuViewModel.IsBusy) return;
+
             try
             {
-                if (this.NavMenuViewModel.IsBusy) return;
-
                 this.NavMenuViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
 
@@ -345,10 +360,10 @@ namespace MetaFrm.Razor.Menu
         }
         private void OnOpenMenuClick(int? menuID)
         {
+            if (this.NavMenuViewModel.IsBusy) return;
+
             try
             {
-                if (this.NavMenuViewModel.IsBusy) return;
-
                 this.NavMenuViewModel.IsBusy = true;
 
                 this.ActiveMenuID = menuID;
@@ -363,10 +378,10 @@ namespace MetaFrm.Razor.Menu
         }
         private async void OnMenuClick(string? url)
         {
+            if (this.NavMenuViewModel.IsBusy) return;
+
             try
             {
-                if (this.NavMenuViewModel.IsBusy) return;
-
                 this.NavMenuViewModel.IsBusy = true;
 
                 if (url == null)
@@ -389,10 +404,10 @@ namespace MetaFrm.Razor.Menu
         }
         private void OnMenuClick(int? menuID, int? assemblyID, bool isActiveMenuID)
         {
+            if (this.NavMenuViewModel.IsBusy) return;
+
             try
             {
-                if (this.NavMenuViewModel.IsBusy) return;
-
                 this.NavMenuViewModel.IsBusy = true;
                 if (menuID != null && assemblyID != null)
                     this.OnAction(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { (int)menuID, (int)assemblyID } });
@@ -411,10 +426,10 @@ namespace MetaFrm.Razor.Menu
         }
         private void OnProfileClick()
         {
+            if (this.NavMenuViewModel.IsBusy) return;
+
             try
             {
-                if (this.NavMenuViewModel.IsBusy) return;
-
                 this.NavMenuViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "Profile" });
 
@@ -427,10 +442,10 @@ namespace MetaFrm.Razor.Menu
         }
         private void OnLoginClick()
         {
+            if (this.NavMenuViewModel.IsBusy) return;
+
             try
             {
-                if (this.NavMenuViewModel.IsBusy) return;
-
                 this.NavMenuViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "Login" });
 
@@ -443,10 +458,10 @@ namespace MetaFrm.Razor.Menu
         }
         private void OnLogoutClick()
         {
+            if (this.NavMenuViewModel.IsBusy) return;
+
             try
             {
-                if (this.NavMenuViewModel.IsBusy) return;
-
                 this.NavMenuViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "Logout" });
 
@@ -459,10 +474,10 @@ namespace MetaFrm.Razor.Menu
         }
         private void OnRegisterClick()
         {
+            if (this.NavMenuViewModel.IsBusy) return;
+
             try
             {
-                if (this.NavMenuViewModel.IsBusy) return;
-
                 this.NavMenuViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "Register" });
 
@@ -475,10 +490,10 @@ namespace MetaFrm.Razor.Menu
         }
         private void OnPasswordResetClick()
         {
+            if (this.NavMenuViewModel.IsBusy) return;
+
             try
             {
-                if (this.NavMenuViewModel.IsBusy) return;
-
                 this.NavMenuViewModel.IsBusy = true;
                 this.OnAction(this, new MetaFrmEventArgs { Action = "PasswordReset" });
 

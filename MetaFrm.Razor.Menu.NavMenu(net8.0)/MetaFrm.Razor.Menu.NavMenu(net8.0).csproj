@@ -8,7 +8,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>MetaFrm.Razor.Menu.NavMenu.net8.0</PackageId>
-    <Version>8.0.4.51</Version>
+    <Version>8.0.4.52</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
     <Copyright>Copyright 2025. dsun all rights reserved.</Copyright>
@@ -28,8 +28,8 @@
     <None Include="..\readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\src\Models\MenuItemModel.cs" Link="Models\MenuItemModel.cs" />
     <Compile Include="..\src\NavMenu.razor.cs" Link="NavMenu.razor.cs" />
-    <Compile Include="..\src\ViewModels\MenuItem.cs" Link="ViewModels\MenuItem.cs" />
     <Compile Include="..\src\ViewModels\NavMenuViewModel.cs" Link="ViewModels\NavMenuViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -39,8 +39,8 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MetaFrm.Core.net8.0" Version="8.0.4.51" />
-    <PackageReference Include="MetaFrm.Razor.Essentials.net8.0" Version="8.0.4.51" />
+    <PackageReference Include="MetaFrm.Core.net8.0" Version="8.0.4.54" />
+    <PackageReference Include="MetaFrm.Razor.Essentials.net8.0" Version="8.0.4.54" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.18" />
   </ItemGroup>
   <ItemGroup>

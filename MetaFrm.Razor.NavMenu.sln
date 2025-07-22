@@ -10,7 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0F4637A3-337
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ViewModels", "ViewModels", "{CC1E8AD2-91E5-47C1-8F53-293A9A0CD3B2}"
 	ProjectSection(SolutionItems) = preProject
-		src\ViewModels\MenuItem.cs = src\ViewModels\MenuItem.cs
 		src\ViewModels\NavMenuViewModel.cs = src\ViewModels\NavMenuViewModel.cs
 	EndProjectSection
 EndProject
@@ -33,6 +32,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaFrm.Razor.Menu.NavMenu(
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaFrm.Razor.Menu.NavMenu(net9.0)", "MetaFrm.Razor.Menu.NavMenu(net9.0)\MetaFrm.Razor.Menu.NavMenu(net9.0).csproj", "{723D9034-F535-4203-90FB-0F9334701AEB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{C8D5274F-AC00-46C7-1F8D-E88E81087A52}"
+	ProjectSection(SolutionItems) = preProject
+		src\Models\MenuItemModel.cs = src\Models\MenuItemModel.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +58,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CC1E8AD2-91E5-47C1-8F53-293A9A0CD3B2} = {0F4637A3-337C-414C-9473-2CEC91A2987A}
 		{1371C18F-0AF9-4D2B-A48A-E5AF80B99DED} = {51E78244-6B63-47B9-ADD3-739EA1E14AD6}
+		{C8D5274F-AC00-46C7-1F8D-E88E81087A52} = {0F4637A3-337C-414C-9473-2CEC91A2987A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {72ACB9CB-3847-492F-84A5-419B30FA6C9A}

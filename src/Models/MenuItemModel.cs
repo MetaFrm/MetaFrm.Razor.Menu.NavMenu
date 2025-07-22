@@ -1,9 +1,12 @@
-﻿namespace MetaFrm.Razor.Menu.ViewModels
+﻿using MetaFrm.MVVM;
+using Microsoft.Extensions.Localization;
+
+namespace MetaFrm.Razor.Menu.ViewModels
 {
     /// <summary>
-    /// MenuItem
+    /// MenuItemModel
     /// </summary>
-    public class MenuItem 
+    public class MenuItemModel : BaseModel
     {
         /// <summary>
         /// MenuID
@@ -36,6 +39,17 @@
         /// <summary>
         /// Child
         /// </summary>
-        public List<MenuItem> Child { get; set; } = [];
+        public List<MenuItemModel> Child { get; set; } = [];
+
+        /// <summary>
+        /// MenuItemModel
+        /// </summary>
+        public MenuItemModel() : base() { }
+
+        /// <summary>
+        /// MenuItemModel
+        /// </summary>
+        /// <param name="localization"></param>
+        public MenuItemModel(IStringLocalizer? localization) : base(localization) { }
     }
 }

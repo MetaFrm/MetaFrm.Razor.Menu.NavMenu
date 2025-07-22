@@ -1,4 +1,5 @@
 ﻿using MetaFrm.MVVM;
+using Microsoft.Extensions.Localization;
 
 namespace MetaFrm.Razor.Menu.ViewModels
 {
@@ -22,6 +23,16 @@ namespace MetaFrm.Razor.Menu.ViewModels
         /// <summary>
         /// MenuItems
         /// </summary>
-        public List<MenuItem> MenuItems { get; set; } = [];
+        public List<MenuItemModel> MenuItems { get; set; } = [];
+
+        /// <summary>
+        /// NavMenuViewModel
+        /// </summary>
+        public NavMenuViewModel() : base() { }
+
+        /// <summary>
+        /// NavMenuViewModel
+        /// </summary>
+        public NavMenuViewModel(IStringLocalizer? localization) : base(localization) { }
     }
 }

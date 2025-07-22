@@ -29,14 +29,14 @@
 
                 <div class="@(this.NavMenuViewModel.CollapseNavMenu?this.NavMenuViewModel.Collapse:this.NavMenuViewModel.NotCollapse) navbar-collapse" id="navbarColor02">
                     <ul class="navbar-nav me-auto">
-                        @foreach (ViewModels.MenuItem parentMenuItem in this.NavMenuViewModel.MenuItems)
+                        @foreach (ViewModels.MenuItemModel parentMenuItem in this.NavMenuViewModel.MenuItems)
                         {
                             if (parentMenuItem.AssemblyID == null || parentMenuItem.AssemblyID == 0 && parentMenuItem.Child.Count > 0)
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="@Localization[parentMenuItem.Description ?? ""]">@Localization[parentMenuItem.Name ?? ""]</a>
                                     <div class="dropdown-menu">
-                                        @foreach (ViewModels.MenuItem menuItem in parentMenuItem.Child)
+                                        @foreach (ViewModels.MenuItemModel menuItem in parentMenuItem.Child)
                                         {
                                             @if (Uri.IsWellFormedUriString(parentMenuItem.Description, UriKind.Absolute))
                                             {
@@ -149,7 +149,7 @@
             }
             <div class="menu-inner-shadow"></div>
             <ul class="menu-inner py-1 ps">
-                @foreach (ViewModels.MenuItem parentMenuItem in this.NavMenuViewModel.MenuItems)
+                @foreach (ViewModels.MenuItemModel parentMenuItem in this.NavMenuViewModel.MenuItems)
                 {
                     if ((parentMenuItem.AssemblyID == null || parentMenuItem.AssemblyID == 0 && parentMenuItem.Child.Count > 0) || (parentMenuItem.AssemblyID != null && parentMenuItem.Child.Count == 0))
                     {
@@ -182,7 +182,7 @@
                             @if (parentMenuItem.Child.Count > 0)
                             {
                                 <ul class="menu-sub">
-                                    @foreach (ViewModels.MenuItem menuItem in parentMenuItem.Child)
+                                    @foreach (ViewModels.MenuItemModel menuItem in parentMenuItem.Child)
                                     {
                                         @if (Uri.IsWellFormedUriString(parentMenuItem.Description, UriKind.Absolute))
                                         {
